@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'NutriTrack - AI Nutrition Assistant' %></title>
+    <meta name="description" content="<%= description || 'AI-powered nutrition tracking and meal analysis' %>">
+    <meta name="keywords" content="nutrition, AI, health, meal tracking, diet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <% if (pageStyles) { %>
+        <% pageStyles.forEach(style => { %>
+            <link rel="stylesheet" href="<%= style %>">
+        <% }); %>
+    <% } %>
+</head>
+<body class="bg-gray-50 text-gray-900 font-inter">
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-50 hidden">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500"></div>
+    </div>
+
+    <!-- Header/Navigation -->
+    <%- include('partials/header', {user: user, currentPage: currentPage}) %>
+
+    <!-- Main Content -->
+    <main class="min-h-screen">
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('partials/scripts') %>
+    
+    <!-- Page-specific JavaScript -->
+    <% if (pageScripts) { %>
+        <% pageScripts.forEach(script => { %>
+            <script src="<%= script %>"></script>
+        <% }); %>
+    <% } %>
+    
+    <!-- Flash Messages -->
+    <% if (messages && messages.length > 0) { %>
+        <div id="flash-messages" class="fixed top-20 right-4 z-50 space-y-2">
+            <% messages.forEach(message => { %>
+                <div class="flash-message bg-<%= message.type === 'error' ? 'red' : message.type === 'success' ? 'green' : 'blue' %>-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                        <span><%= message.text %></span>
+                        <button class="flash-close ml-4 text-white hover:text-gray-200">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</body>
+</html>

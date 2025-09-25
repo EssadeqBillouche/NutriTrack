@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriScan.AI - AI-Powered Meal Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black text-white overflow-x-hidden font-['Inter']">
+    <%- include('home-header') %>
+    <!-- Hero Section -->
+    <main id="home" class="min-h-screen relative overflow-hidden bg-gradient-to-br from-lime-400 to-lime-500">
+        <div class="max-w-7xl mx-auto px-6 py-16 flex items-center min-h-screen">
+            <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
+                <!-- Left Content -->
+                <div class="space-y-8 relative z-10">
+                    <!-- Powered by Gemini Badge -->
+                    <div class="relative inline-block">
+                        <div class="bg-black text-white px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                            <span>Powered by Gemini AI</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Heading -->
+                    <div class="space-y-4">
+                        <h1 class="text-5xl lg:text-7xl font-black text-black leading-tight">
+                            <span class="block">Scan.</span>
+                            <span class="block">Analyze.</span>
+                            <span class="block">Eat Smart.</span>
+                        </h1>
+                        <p class="text-xl text-gray-800 font-medium max-w-lg leading-relaxed">
+                            Upload a photo of your meal and get instant <span class="font-bold underline decoration-2 decoration-black">nutritional analysis</span> powered by cutting-edge AI.
+                        </p>
+                    </div>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-upload"></i>
+                            <span>Upload Meal Photo</span>
+                        </button>
+                        <button class="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-play-circle"></i>
+                            <span>Watch Demo</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="flex flex-wrap gap-6 pt-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-black">50K+</div>
+                            <div class="text-gray-700">Meals Analyzed</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-black">98%</div>
+                            <div class="text-gray-700">Accuracy</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-black">10M+</div>
+                            <div class="text-gray-700">Data Points</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Section - Meal Analysis Demo -->
+                <div class="relative flex justify-center items-center">
+                    <!-- Background Decorative Elements -->
+                    <div class="absolute inset-0">
+                        <!-- Floating geometric shapes -->
+                        <div class="absolute top-10 left-10 w-8 h-8 bg-white/20 rounded-full animate-float"></div>
+                        <div class="absolute top-32 right-16 w-6 h-6 bg-yellow-400/30 rounded-full animate-float" style="animation-delay: 0.5s;"></div>
+                        <div class="absolute bottom-32 left-8 w-4 h-4 bg-orange-400/40 rounded-full animate-float" style="animation-delay: 1s;"></div>
+                        <div class="absolute bottom-16 right-32 w-10 h-10 bg-white/15 rounded-full animate-float" style="animation-delay: 1.5s;"></div>
+                    </div>
+
+                    <!-- Analysis Demo Container -->
+                    <div class="relative z-10 w-full max-w-lg">
+                        <!-- Meal Image -->
+                        <div class="shadow-2xl mb-6">
+                            <div class="w-full h-64 bg-gradient-to-br from-orange-200 to-orange-300 rounded-2xl overflow-hidden relative transition-transform duration-300 hover:scale-102">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center text-orange-800">
+                                        <i class="fas fa-utensils text-6xl mb-4"></i>
+                                        <p class="text-xl font-bold">Sample Meal Analysis</p>
+                                    </div>
+                                </div>
+                                <!-- Food items as decorative elements -->
+                                <div class="absolute top-4 left-4 w-12 h-12 bg-red-400 rounded-full"></div>
+                                <div class="absolute bottom-4 right-4 w-16 h-16 bg-green-400 rounded-full"></div>
+                                <div class="absolute top-1/2 left-1/4 w-10 h-10 bg-yellow-400 rounded-lg transform rotate-45"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Analysis Results -->
+                        <div class="bg-white rounded-2xl p-6 shadow-2xl">
+                            <h3 class="text-2xl font-bold text-black mb-4 flex items-center">
+                                <i class="fas fa-chart-pie text-lime-500 mr-2"></i>
+                                Nutrition Analysis
+                            </h3>
+                            
+                            <!-- Calorie Count -->
+                            <div class="mb-6">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-700 font-medium">Total Calories</span>
+                                    <span class="text-black font-bold">650 kcal</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-lime-500 h-3 rounded-full transition-all duration-1000 ease-in-out" style="width: 75%"></div>
+                                </div>
+                                <div class="text-sm text-gray-500 mt-1">About 30% of daily needs</div>
+                            </div>
+                            
+                            <!-- Macronutrients -->
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <div class="text-center">
+                                    <div class="text-black font-bold text-lg">32g</div>
+                                    <div class="text-gray-600 text-sm">Protein</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-black font-bold text-lg">45g</div>
+                                    <div class="text-gray-600 text-sm">Carbs</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-black font-bold text-lg">22g</div>
+                                    <div class="text-gray-600 text-sm">Fat</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-red-500 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Food Items Identified -->
+                            <div class="mb-4">
+                                <h4 class="text-gray-700 font-medium mb-2">Identified Foods:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-lime-100 text-lime-800 px-3 py-1 rounded-full text-sm">Grilled Chicken</span>
+                                    <span class="bg-lime-100 text-lime-800 px-3 py-1 rounded-full text-sm">Brown Rice</span>
+                                    <span class="bg-lime-100 text-lime-800 px-3 py-1 rounded-full text-sm">Broccoli</span>
+                                    <span class="bg-lime-100 text-lime-800 px-3 py-1 rounded-full text-sm">Avocado</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Health Score -->
+                            <div class="flex items-center justify-between bg-lime-50 p-3 rounded-lg">
+                                <span class="text-black font-medium">Health Score</span>
+                                <div class="flex items-center">
+                                    <span class="text-2xl font-bold text-lime-600 mr-2">8.2/10</span>
+                                    <i class="fas fa-heart text-lime-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Background decorative elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 right-20 w-32 h-32 bg-white/5 rounded-full"></div>
+            <div class="absolute bottom-40 left-10 w-24 h-24 bg-yellow-400/10 rounded-full"></div>
+            <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-orange-400/10 rounded-full"></div>
+        </div>
+    </main>
+
+    <!-- sections -->
+    <%- include('home-section') %>
+
+    <!-- Footer -->
+    <%- include('home-footer') %>
+
+    <!-- scriptes -->
+    <%- include('home-scripts') %>
+</body>
+</html>

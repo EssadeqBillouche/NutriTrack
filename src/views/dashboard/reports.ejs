@@ -1,0 +1,218 @@
+<%- include('dashboard-layout', { 
+    title: 'Rapports & Graphiques', 
+    currentPage: 'reports' 
+}) %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Header Actions -->
+<div class="flex items-center space-x-4">
+    <!-- Date Range Selector -->
+    <select class="bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600">
+        <option>Cette semaine</option>
+        <option>Ce mois</option>
+        <option>3 derniers mois</option>
+        <option>Cette année</option>
+    </select>
+    
+    <!-- Export Button -->
+    <button class="bg-lime-500 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-lime-400 flex items-center space-x-2">
+        <i class="fas fa-download"></i>
+        <span>Exporter</span>
+    </button>
+</div>
+
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <!-- Weekly Calories -->
+    <div class="bg-slate-800 rounded-xl p-4 shadow-xl">
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="text-slate-400 text-sm">Calories Cette Semaine</p>
+                <p class="text-2xl font-bold mt-1">12,450 <span class="text-sm font-normal text-slate-400">kcal</span></p>
+                <p class="text-sm text-lime-400 mt-1">+5% vs semaine dernière</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-fire text-orange-500"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-slate-800 rounded-xl p-4 shadow-xl">
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="text-slate-400 text-sm">Protéines Moyennes</p>
+                <p class="text-2xl font-bold mt-1">85g <span class="text-sm font-normal text-slate-400">/jour</span></p>
+                <p class="text-sm text-blue-400 mt-1">Objectif: 110g</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-dumbbell text-blue-500"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Weight Progress -->
+    <div class="bg-slate-800 rounded-xl p-4 shadow-xl">
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="text-slate-400 text-sm">Progrès Poids</p>
+                <p class="text-2xl font-bold mt-1">-2.3kg <span class="text-sm font-normal text-slate-400">ce mois</span></p>
+                <p class="text-sm text-lime-400 mt-1">En bonne voie!</p>
+            </div>
+            <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-weight text-green-500"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-slate-800 rounded-xl p-4 shadow-xl">
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="text-slate-400 text-sm">Score Santé</p>
+                <p class="text-2xl font-bold mt-1">8.2 <span class="text-sm font-normal text-slate-400">/10</span></p>
+                <p class="text-sm text-lime-400 mt-1">Excellent!</p>
+            </div>
+            <div class="w-12 h-12 bg-lime-500/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-heart text-lime-500"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Calories Trend Chart -->
+    <div class="bg-slate-800 rounded-xl p-6 shadow-xl hover:-translate-y-1 transition-transform duration-300">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">Évolution des Calories</h3>
+            <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-lime-500 text-slate-900 rounded-lg text-sm font-medium">7j</button>
+                <button class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">30j</button>
+                <button class="px-3 py-1 bg-slate-700 text-slate-300 rounded-lg text-sm">90j</button>
+            </div>
+        </div>
+        <div class="relative h-80">
+            <canvas id="caloriesChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Macronutrients Distribution -->
+    <div class="bg-slate-800 rounded-xl p-6 shadow-xl hover:-translate-y-1 transition-transform duration-300">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold">Distribution Macronutriments</h3>
+            <span class="text-sm text-slate-400">Cette semaine</span>
+        </div>
+        <div class="relative h-80">
+            <canvas id="macrosChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Analytics -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-slate-800 rounded-xl p-6 shadow-xl">
+        <h3 class="text-xl font-bold mb-6">Analyse Nutritionnelle Hebdomadaire</h3>
+        
+        <div class="space-y-4">
+            <div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Protéines</span>
+                    <span class="text-slate-400">595g / 770g</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-3">
+                    <div class="bg-blue-500 h-3 rounded-full transition-all duration-1000 ease-in-out" style="width: 77%"></div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Glucides</span>
+                    <span class="text-slate-400">1,020g / 1,400g</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-3">
+                    <div class="bg-yellow-500 h-3 rounded-full transition-all duration-1000 ease-in-out" style="width: 73%"></div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Lipides</span>
+                    <span class="text-slate-400">294g / 490g</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-3">
+                    <div class="bg-red-500 h-3 rounded-full transition-all duration-1000 ease-in-out" style="width: 60%"></div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Fibres</span>
+                    <span class="text-slate-400">98g / 140g</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-3">
+                    <div class="bg-green-500 h-3 rounded-full transition-all duration-1000 ease-in-out" style="width: 70%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Health Insights -->
+    <div class="space-y-6">
+        <div class="bg-slate-800 rounded-xl p-6 shadow-xl">
+            <h3 class="text-xl font-bold mb-6">Objectifs Hebdomadaires</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">Perte de Poids</span>
+                        <span class="text-sm text-slate-400">-2.3kg / -5kg</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-2">
+                        <div class="bg-lime-500 h-2 rounded-full" style="width: 46%"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">Repas Équilibrés</span>
+                        <span class="text-sm text-slate-400">18/21</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 86%"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">Hydratation</span>
+                        <span class="text-sm text-slate-400">17.5L / 21L</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-2">
+                        <div class="bg-cyan-500 h-2 rounded-full" style="width: 83%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="bg-slate-800 rounded-xl p-6 shadow-xl">
+            <h3 class="text-xl font-bold mb-6">Actions Rapides</h3>
+            
+            <div class="space-y-3">
+                <button class="w-full bg-lime-500/20 text-lime-400 p-3 rounded-lg flex items-center justify-center hover:bg-lime-500/30 transition-colors">
+                    <i class="fas fa-download mr-2"></i>
+                    <span>Exporter Rapport</span>
+                </button>
+                
+                <button class="w-full bg-blue-500/20 text-blue-400 p-3 rounded-lg flex items-center justify-center hover:bg-blue-500/30 transition-colors">
+                    <i class="fas fa-share mr-2"></i>
+                    <span>Partager Progrès</span>
+                </button>
+                
+                <button class="w-full bg-purple-500/20 text-purple-400 p-3 rounded-lg flex items-center justify-center hover:bg-purple-500/30 transition-colors">
+                    <i class="fas fa-cog mr-2"></i>
+                    <span>Configurer Alertes</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

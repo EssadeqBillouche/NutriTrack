@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - NutriTrack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-900 text-white overflow-x-hidden font-['Inter']">
+    <!-- Dashboard Layout -->
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-slate-900 p-6 hidden md:block">
+            <div class="flex items-center space-x-3 mb-10">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-lime-400 via-green-500 to-emerald-600 flex items-center justify-center relative">
+                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                        <div class="w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500"></div>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-yellow-400"></div>
+                </div>
+                <span class="text-2xl font-bold text-white">NutriTrack</span>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="flex items-center space-x-3 mb-8 p-3 rounded-lg bg-slate-800">
+                <div class="w-12 h-12 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold">JD</span>
+                </div>
+                <div>
+                    <p class="font-medium">John Doe</p>
+                    <p class="text-sm text-slate-400">Weight Management</p>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="/dashboard" class="flex items-center space-x-3 p-3 rounded-lg <%= currentPage === 'dashboard' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-home w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/meal-plans" class="flex items-center space-x-3 p-3 rounded-lg <%= currentPage === 'meal-plans' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-utensils w-5 text-center"></i>
+                    <span>Plans de Repas</span>
+                </a>
+                <a href="/upload" class="flex items-center space-x-3 p-3 rounded-lg <%= currentPage === 'upload' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-camera w-5 text-center"></i>
+                    <span>Scanner Repas</span>
+                </a>
+                <a href="/reports" class="flex items-center space-x-3 p-3 rounded-lg <%= currentPage === 'reports' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span>Rapports</span>
+                </a>
+                <a href="/insights" class="flex items-center space-x-3 p-3 rounded-lg <%= currentPage === 'insights' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-user-md w-5 text-center"></i>
+                    <span>Insights Santé</span>
+                </a>
+                <a href="/settings" class="flex items-center space-x-3 p-3 rounded-lg <%= currentPage === 'settings' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span>Paramètres</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <header class="bg-slate-800 p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="md:hidden text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold"><%= title %></h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                </div>
+            </header>
+            
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Page content goes here -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900 z-50 hidden md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-lime-400 via-green-500 to-emerald-600 flex items-center justify-center relative">
+                        <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                            <div class="w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500"></div>
+                        </div>
+                    </div>
+                    <span class="text-2xl font-bold text-white">NutriTrack</span>
+                </div>
+                <button id="close-mobile-menu" class="text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <nav class="space-y-4">
+                <a href="/dashboard" class="block p-3 rounded-lg <%= currentPage === 'dashboard' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-home mr-3"></i>Dashboard
+                </a>
+                <a href="/meal-plans" class="block p-3 rounded-lg <%= currentPage === 'meal-plans' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-utensils mr-3"></i>Plans de Repas
+                </a>
+                <a href="/upload" class="block p-3 rounded-lg <%= currentPage === 'upload' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-camera mr-3"></i>Scanner Repas
+                </a>
+                <a href="/reports" class="block p-3 rounded-lg <%= currentPage === 'reports' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-chart-line mr-3"></i>Rapports
+                </a>
+                <a href="/insights" class="block p-3 rounded-lg <%= currentPage === 'insights' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-user-md mr-3"></i>Insights Santé
+                </a>
+                <a href="/settings" class="block p-3 rounded-lg <%= currentPage === 'settings' ? 'bg-lime-500/10 text-lime-400 border-l-4 border-lime-500' : 'text-slate-300 hover:text-white hover:bg-slate-800' %>">
+                    <i class="fas fa-cog mr-3"></i>Paramètres
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu 
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+        
+        document.getElementById('close-mobile-menu').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>

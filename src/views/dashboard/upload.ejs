@@ -178,4 +178,106 @@
                     </div>
                 </div>
 
+<script>
+// File upload functionality
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const cameraBtn = document.getElementById('cameraBtn');
+const uploadContainer = document.getElementById('uploadContainer');
+const uploadContent = document.getElementById('uploadContent');
+const analysisResults = document.getElementById('analysisResults');
+const loadingState = document.getElementById('loadingState');
+const uploadedImage = document.getElementById('uploadedImage');
+const removeImage = document.getElementById('removeImage');
 
+uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+});
+
+cameraBtn.addEventListener('click', () => {
+    fileInput.setAttribute('capture', 'environment');
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        handleFileUpload(file);
+    }
+});
+
+// drag and drop 
+uploadContainer.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    uploadContainer.classList.add('scale-105', 'bg-lime-500/15', 'border-lime-500');
+});
+
+uploadContainer.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    uploadContainer.classList.remove('scale-105', 'bg-lime-500/15', 'border-lime-500');
+});
+
+uploadContainer.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadContainer.classList.remove('scale-105', 'bg-lime-500/15', 'border-lime-500');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+        handleFileUpload(file);
+    }
+});
+
+removeImage.addEventListener('click', function() {
+    resetUpload();
+});
+
+function handleFileUpload(file) {
+    // validation
+    if (!file.type.startsWith('image/')) {
+        alert('Veuillez sélectionner un fichier image valide.');
+        return;
+    }
+    
+    if (file.size > 10 * 1024 * 1024) {
+        alert('Le fichier est trop volumineux. Taille maximale: 10MB');
+        return;
+    }
+    
+    uploadContent.classList.add('hidden');
+    loadingState.classList.remove('hidden');
+    
+    // Create image preview/temporary will be replaced
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedImage.src = e.target.result;
+        
+        setTimeout(() => {
+            loadingState.classList.add('hidden');
+            analysisResults.classList.remove('hidden');
+            
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.transition-all');
+                bars.forEach(bar => {
+                    bar.style.width = bar.style.width;
+                });
+            }, 500);
+        }, 3000);
+    };
+    reader.readAsDataURL(file);
+}
+
+function resetUpload() {
+    fileInput.value = '';
+    uploadContent.classList.remove('hidden');
+    analysisResults.classList.add('hidden');
+    loadingState.classList.add('hidden');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const bars = document.querySelectorAll('.transition-all');
+        bars.forEach(bar => {
+            bar.style.width = bar.style.width;
+        });
+    }, 500);
+});
+</script>

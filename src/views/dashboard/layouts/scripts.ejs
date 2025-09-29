@@ -1,0 +1,37 @@
+<script>
+    // Mobile menu functionality
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.remove('hidden');
+    });
+    
+    document.getElementById('close-mobile-menu').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.add('hidden');
+    });
+    
+    // User menu functionality
+    document.getElementById('user-menu-button').addEventListener('click', function() {
+        document.getElementById('user-menu').classList.toggle('hidden');
+    });
+    
+    // Close user menu when clicking elsewhere
+    document.addEventListener('click', function(event) {
+        const userMenu = document.getElementById('user-menu');
+        const userMenuButton = document.getElementById('user-menu-button');
+        
+        if (userMenu && userMenuButton) {
+            if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
+                userMenu.classList.add('hidden');
+            }
+        }
+    });
+    
+    // Animate nutrition bars on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            const bars = document.querySelectorAll('.nutrition-bar');
+            bars.forEach(bar => {
+                bar.style.width = bar.style.width;
+            });
+        }, 500);
+    });
+</script>

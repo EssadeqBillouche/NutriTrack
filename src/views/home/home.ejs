@@ -27,14 +27,17 @@
     </script>
 </head>
 <body class="bg-black text-white overflow-x-hidden font-['Inter']">
+    <%- include('popup') %>
+    
     <%- include('home-header') %>
-    <!-- Hero Section -->
+
+
+    <!-- main content -->
     <main id="home" class="min-h-screen relative overflow-hidden bg-gradient-to-br from-lime-400 to-lime-500">
         <div class="max-w-7xl mx-auto px-6 py-16 flex items-center min-h-screen">
             <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
                 <!-- Left Content -->
                 <div class="space-y-8 relative z-10">
-                    <!-- Powered by Gemini Badge -->
                     <div class="relative inline-block">
                         <div class="bg-black text-white px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2">
                             <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
@@ -42,7 +45,6 @@
                         </div>
                     </div>
                     
-                    <!-- Main Heading -->
                     <div class="space-y-4">
                         <h1 class="text-5xl lg:text-7xl font-black text-black leading-tight">
                             <span class="block">Scan.</span>
@@ -54,19 +56,13 @@
                         </p>
                     </div>
                     
-                    <!-- CTA Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <button class="bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2">
+                        <button class="bg-black text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center space-x-2 require-registration">
                             <i class="fas fa-upload"></i>
                             <span>Upload Meal Photo</span>
                         </button>
-                        <button class="bg-white text-black px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2">
-                            <i class="fas fa-play-circle"></i>
-                            <span>Watch Demo</span>
-                        </button>
                     </div>
                     
-                    <!-- Stats -->
                     <div class="flex flex-wrap gap-6 pt-4">
                         <div class="text-center">
                             <div class="text-2xl font-bold text-black">50K+</div>
@@ -84,19 +80,15 @@
                 </div>
 
                 <!-- Right Section - Meal Analysis Demo -->
-                <div class="relative flex justify-center items-center">
-                    <!-- Background Decorative Elements -->
+                <div class="relative flex justify-center items-center">->
                     <div class="absolute inset-0">
-                        <!-- Floating geometric shapes -->
                         <div class="absolute top-10 left-10 w-8 h-8 bg-white/20 rounded-full animate-float"></div>
                         <div class="absolute top-32 right-16 w-6 h-6 bg-yellow-400/30 rounded-full animate-float" style="animation-delay: 0.5s;"></div>
                         <div class="absolute bottom-32 left-8 w-4 h-4 bg-orange-400/40 rounded-full animate-float" style="animation-delay: 1s;"></div>
                         <div class="absolute bottom-16 right-32 w-10 h-10 bg-white/15 rounded-full animate-float" style="animation-delay: 1.5s;"></div>
                     </div>
 
-                    <!-- Analysis Demo Container -->
                     <div class="relative z-10 w-full max-w-lg">
-                        <!-- Meal Image -->
                         <div class="shadow-2xl mb-6">
                             <div class="w-full h-64 bg-gradient-to-br from-orange-200 to-orange-300 rounded-2xl overflow-hidden relative transition-transform duration-300 hover:scale-102">
                                 <div class="absolute inset-0 flex items-center justify-center">
@@ -105,21 +97,18 @@
                                         <p class="text-xl font-bold">Sample Meal Analysis</p>
                                     </div>
                                 </div>
-                                <!-- Food items as decorative elements -->
                                 <div class="absolute top-4 left-4 w-12 h-12 bg-red-400 rounded-full"></div>
                                 <div class="absolute bottom-4 right-4 w-16 h-16 bg-green-400 rounded-full"></div>
                                 <div class="absolute top-1/2 left-1/4 w-10 h-10 bg-yellow-400 rounded-lg transform rotate-45"></div>
                             </div>
                         </div>
                         
-                        <!-- Analysis Results -->
                         <div class="bg-white rounded-2xl p-6 shadow-2xl">
                             <h3 class="text-2xl font-bold text-black mb-4 flex items-center">
                                 <i class="fas fa-chart-pie text-lime-500 mr-2"></i>
                                 Nutrition Analysis
                             </h3>
                             
-                            <!-- Calorie Count -->
                             <div class="mb-6">
                                 <div class="flex justify-between mb-2">
                                     <span class="text-gray-700 font-medium">Total Calories</span>
@@ -131,7 +120,6 @@
                                 <div class="text-sm text-gray-500 mt-1">About 30% of daily needs</div>
                             </div>
                             
-                            <!-- Macronutrients -->
                             <div class="grid grid-cols-3 gap-4 mb-6">
                                 <div class="text-center">
                                     <div class="text-black font-bold text-lg">32g</div>
@@ -156,7 +144,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Food Items Identified -->
                             <div class="mb-4">
                                 <h4 class="text-gray-700 font-medium mb-2">Identified Foods:</h4>
                                 <div class="flex flex-wrap gap-2">
@@ -167,7 +154,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Health Score -->
                             <div class="flex items-center justify-between bg-lime-50 p-3 rounded-lg">
                                 <span class="text-black font-medium">Health Score</span>
                                 <div class="flex items-center">
@@ -181,7 +167,6 @@
             </div>
         </div>
         
-        <!-- Background decorative elements -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute top-20 right-20 w-32 h-32 bg-white/5 rounded-full"></div>
             <div class="absolute bottom-40 left-10 w-24 h-24 bg-yellow-400/10 rounded-full"></div>

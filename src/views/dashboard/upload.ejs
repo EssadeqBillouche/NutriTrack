@@ -1,0 +1,283 @@
+<%- include('dashboard-layout', { 
+    title: 'Scanner Repas', 
+    currentPage: 'upload' 
+}) %>
+
+<div class="flex items-center space-x-4">
+    <button class="text-slate-300 hover:text-white flex items-center space-x-2">
+        <i class="fas fa-history"></i>
+        <span>Scans Récents</span>
+    </button>
+    
+    <button class="text-slate-300 hover:text-white">
+        <i class="fas fa-question-circle text-xl"></i>
+    </button>
+</div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="border-2 border-dashed border-lime-400 rounded-2xl p-12 text-center mb-8 bg-lime-500/5 hover:border-lime-500 hover:bg-lime-500/10 transition-all duration-300" id="uploadContainer">
+                        <div id="uploadContent">
+                            <div class="w-20 h-20 bg-lime-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-slow">
+                                <i class="fas fa-camera text-3xl text-lime-400"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4">Analysez Votre Repas avec l'IA</h2>
+                            <p class="text-slate-300 mb-6 max-w-lg mx-auto">
+                                Prenez une photo de votre repas et obtenez une analyse nutritionnelle complète en quelques secondes grâce à notre IA avancée.
+                            </p>
+                            
+                            <!-- Upload Buttons -->
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                                <button id="cameraBtn" class="bg-lime-500 text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-lime-400 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-camera"></i>
+                                    <span>Prendre une Photo</span>
+                                </button>
+                                <button id="uploadBtn" class="bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-600 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-upload"></i>
+                                    <span>Choisir un Fichier</span>
+                                </button>
+                            </div>
+                            
+                            <p class="text-sm text-slate-400">
+                                Formats supportés: JPG, PNG, WEBP (max 10MB)
+                            </p>
+                        </div>
+                        
+                        <input type="file" id="fileInput" accept="image/*" class="hidden" capture="environment">
+                    </div>
+                    
+                    <div id="analysisResults" class="hidden">
+                        <!-- Uploaded Image -->
+                        <div class="bg-slate-800 rounded-xl p-6 shadow-xl mb-6">
+                            <h3 class="text-xl font-bold mb-4">Image Analysée</h3>
+                            <div class="relative">
+                                <img id="uploadedImage" class="w-full max-w-md mx-auto rounded-xl transition-transform duration-300 hover:scale-105" alt="Meal to analyze">
+                                <div class="absolute top-4 right-4">
+                                    <button id="removeImage" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-slate-800 to-slate-700 border border-slate-600 rounded-xl p-6 shadow-xl">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold flex items-center">
+                                    <i class="fas fa-chart-pie text-lime-500 mr-2"></i>
+                                    Analyse Nutritionnelle
+                                </h3>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                    <span class="text-sm text-green-400">Analyse Terminée</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-lg font-medium">Calories Total</span>
+                                    <span class="text-3xl font-bold text-lime-400">650 kcal</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-4">
+                                    <div class="bg-lime-500 h-4 rounded-full nutrition-bar" style="width: 75%"></div>
+                                </div>
+                                <div class="text-sm text-slate-400 mt-2">Environ 30% des besoins quotidiens</div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="fas fa-dumbbell text-blue-500 text-xl"></i>
+                                    </div>
+                                    <div class="text-2xl font-bold text-blue-400">32g</div>
+                                    <div class="text-slate-400 text-sm">Protéines</div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2 mt-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="fas fa-bread-slice text-yellow-500 text-xl"></i>
+                                    </div>
+                                    <div class="text-2xl font-bold text-yellow-400">45g</div>
+                                    <div class="text-slate-400 text-sm">Glucides</div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2 mt-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i class="fas fa-oil-can text-red-500 text-xl"></i>
+                                    </div>
+                                    <div class="text-2xl font-bold text-red-400">22g</div>
+                                    <div class="text-slate-400 text-sm">Lipides</div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2 mt-2">
+                                        <div class="bg-red-500 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <h4 class="text-lg font-bold mb-4">Aliments Identifiés</h4>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="bg-lime-500/20 text-lime-400 px-4 py-2 rounded-full text-sm font-medium">
+                                        <i class="fas fa-check-circle mr-2"></i>Poulet Grillé
+                                    </span>
+                                    <span class="bg-lime-500/20 text-lime-400 px-4 py-2 rounded-full text-sm font-medium">
+                                        <i class="fas fa-check-circle mr-2"></i>Riz Brun
+                                    </span>
+                                    <span class="bg-lime-500/20 text-lime-400 px-4 py-2 rounded-full text-sm font-medium">
+                                        <i class="fas fa-check-circle mr-2"></i>Brocoli
+                                    </span>
+                                    <span class="bg-lime-500/20 text-lime-400 px-4 py-2 rounded-full text-sm font-medium">
+                                        <i class="fas fa-check-circle mr-2"></i>Avocat
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-slate-700/50 p-4 rounded-lg">
+                                    <h5 class="font-bold mb-3">Score Santé</h5>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-2xl font-bold text-lime-400">8.2/10</span>
+                                        <i class="fas fa-heart text-lime-500 text-2xl"></i>
+                                    </div>
+                                    <p class="text-sm text-slate-300 mt-2">Excellent choix nutritionnel!</p>
+                                </div>
+                                
+                                <div class="bg-slate-700/50 p-4 rounded-lg">
+                                    <h5 class="font-bold mb-3">Recommandations</h5>
+                                    <ul class="text-sm text-slate-300 space-y-1">
+                                        <li>• Bon équilibre protéines/glucides</li>
+                                        <li>• Ajoutez plus de légumes verts</li>
+                                        <li>• Considérez un fruit en dessert</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                                <button class="bg-lime-500 text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-lime-400 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-save"></i>
+                                    <span>Sauvegarder l'Analyse</span>
+                                </button>
+                                <button class="bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-600 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-share"></i>
+                                    <span>Partager</span>
+                                </button>
+                                <button class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-400 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Voir les Rapports</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="loadingState" class="hidden text-center py-12">
+                        <div class="w-10 h-10 border-3 border-slate-600 border-t-lime-500 rounded-full animate-spin mx-auto mb-4"></div>
+                        <h3 class="text-xl font-bold mb-2">Analyse en Cours...</h3>
+                        <p class="text-slate-400">Notre IA analyse votre repas, veuillez patienter...</p>
+                    </div>
+                </div>
+
+<script>
+// File upload functionality
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const cameraBtn = document.getElementById('cameraBtn');
+const uploadContainer = document.getElementById('uploadContainer');
+const uploadContent = document.getElementById('uploadContent');
+const analysisResults = document.getElementById('analysisResults');
+const loadingState = document.getElementById('loadingState');
+const uploadedImage = document.getElementById('uploadedImage');
+const removeImage = document.getElementById('removeImage');
+
+uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+});
+
+cameraBtn.addEventListener('click', () => {
+    fileInput.setAttribute('capture', 'environment');
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        handleFileUpload(file);
+    }
+});
+
+// drag and drop 
+uploadContainer.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    uploadContainer.classList.add('scale-105', 'bg-lime-500/15', 'border-lime-500');
+});
+
+uploadContainer.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    uploadContainer.classList.remove('scale-105', 'bg-lime-500/15', 'border-lime-500');
+});
+
+uploadContainer.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadContainer.classList.remove('scale-105', 'bg-lime-500/15', 'border-lime-500');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+        handleFileUpload(file);
+    }
+});
+
+removeImage.addEventListener('click', function() {
+    resetUpload();
+});
+
+function handleFileUpload(file) {
+    // validation
+    if (!file.type.startsWith('image/')) {
+        alert('Veuillez sélectionner un fichier image valide.');
+        return;
+    }
+    
+    if (file.size > 10 * 1024 * 1024) {
+        alert('Le fichier est trop volumineux. Taille maximale: 10MB');
+        return;
+    }
+    
+    uploadContent.classList.add('hidden');
+    loadingState.classList.remove('hidden');
+    
+    // Create image preview/temporary will be replaced
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedImage.src = e.target.result;
+        
+        setTimeout(() => {
+            loadingState.classList.add('hidden');
+            analysisResults.classList.remove('hidden');
+            
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.transition-all');
+                bars.forEach(bar => {
+                    bar.style.width = bar.style.width;
+                });
+            }, 500);
+        }, 3000);
+    };
+    reader.readAsDataURL(file);
+}
+
+function resetUpload() {
+    fileInput.value = '';
+    uploadContent.classList.remove('hidden');
+    analysisResults.classList.add('hidden');
+    loadingState.classList.add('hidden');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const bars = document.querySelectorAll('.transition-all');
+        bars.forEach(bar => {
+            bar.style.width = bar.style.width;
+        });
+    }, 500);
+});
+</script>

@@ -1,4 +1,41 @@
 <script>
+    const popup = document.getElementById('registration-popup');
+    const popupContent = popup.querySelector('div');
+    const closeBtn = document.getElementById('close-popup');
+    const registerBtn = document.getElementById('register-btn');
+    const registrationButtons = document.querySelectorAll('.require-registration');
+
+    // show popup
+    function showPopup() {
+        popup.classList.remove('hidden');
+        setTimeout(() => {
+            popupContent.classList.remove('scale-95', 'opacity-0');
+            popupContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    // hide popup
+    function hidePopup() {
+        popupContent.classList.remove('scale-100', 'opacity-100');
+        popupContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            popup.classList.add('hidden');
+        }, 300);
+    }
+
+    registrationButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            showPopup();
+        });
+    });
+
+    closeBtn.addEventListener('click', hidePopup);
+
+    registerBtn.addEventListener('click', function () {
+        /////
+    });
+
     // Mobile menu toggle
     document
         .getElementById("mobile-menu-button")
@@ -6,31 +43,4 @@
             const menu = document.getElementById("mobile-menu");
             menu.classList.toggle("hidden");
         });
-
-    // Scroll animations
-    function checkScroll() {
-        const sections = document.querySelectorAll("section");
-
-        sections.forEach((section) => {
-            const sectionTop = section.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-
-            if (sectionTop < windowHeight * 0.85) {
-                section.classList.add("opacity-100", "translate-y-0");
-            }
-        });
-    }
-
-    window.addEventListener("scroll", checkScroll);
-    window.addEventListener("load", checkScroll);
-
-    // Animate nutrition bars on page load
-    document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-            const bars = document.querySelectorAll(".nutrition-bar");
-            bars.forEach((bar) => {
-                bar.style.width = bar.style.width;
-            });
-        }, 500);
-    });
 </script>

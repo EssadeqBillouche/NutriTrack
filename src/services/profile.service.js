@@ -1,8 +1,5 @@
-const profileRepository = require('../persistence/profile.repository');
+import * as profileRepository from '../persistence/profile.repository.js';
 
-module.exports = {
-  fetchUserProfile: async (userId) => {
-    const profile = await profileRepository.getProfileByUserId(userId);
-    return profile;
-  }
-};
+export async function fetchUserProfile(userId) {
+  return await profileRepository.getProfileByUserId(userId);
+}

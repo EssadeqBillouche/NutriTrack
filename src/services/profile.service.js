@@ -1,0 +1,1 @@
+const profileRepository = require('../persistence/profile.repository');

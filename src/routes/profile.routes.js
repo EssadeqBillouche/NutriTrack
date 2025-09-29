@@ -9,3 +9,5 @@ router.get(
   authMiddleware,
   profileController.getProfile
 );
+
+module.exports = router;

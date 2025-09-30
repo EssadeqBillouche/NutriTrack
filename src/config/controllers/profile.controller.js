@@ -10,6 +10,10 @@ const getProfile = async (req, res, next) => {
   }
 };
 
+export const getProfileStatic = (req, res) =>{
+  res.render('dashboard/profile')
+}
+
 export default {
-  getProfile,
+  getProfileStatic,
 };

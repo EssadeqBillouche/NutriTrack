@@ -1,36 +1,63 @@
-<%- layout('layouts/main') %>
-<div class="form-container">
-  <!-- Form Title -->
+<div class="form-container max-w-md mx-auto bg-slate-800 rounded-2xl shadow-lg p-8">
+  <!-- Form Header -->
   <div class="text-center mb-8">
-    <h1 class="text-3xl font-bold text-white mb-2">Sign In</h1>
-    <p class="text-slate-300">
-      Don't have an account?
-      <a href="/auth/register" class="text-lime-400 font-medium hover:text-lime-300">Create Account</a>
+    <h1 class="text-3xl font-bold text-white">Welcome Back</h1>
+    <p class="text-slate-400 mt-2">
+      Don’t have an account?
+      <a href="/auth/register" class="text-lime-400 font-semibold hover:text-lime-300 transition">
+        Create one
+      </a>
     </p>
+
     <% if (error) { %>
-      <p class="text-red-500 mt-4"><%= error %></p>
+      <p class="text-red-500 mt-4 text-sm font-medium"><%= error %></p>
     <% } %>
   </div>
 
   <!-- Login Form -->
-  <div class="form-section p-8">
-    <form id="loginForm" action="/auth/login" method="POST">
-      <!-- Email -->
-      <div class="mb-6">
-        <label for="email" class="form-label required">Email</label>
-        <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address" required>
-      </div>
+  <form id="loginForm" action="/auth/login" method="POST" class="space-y-6">
+    <!-- Email -->
+    <div>
+      <label for="email" class="form-label required">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-input w-full"
+        placeholder="Enter your email"
+        required
+      >
+    </div>
 
-      <!-- Password -->
-      <div class="mb-6">
-        <label for="password" class="form-label required">Password</label>
-        <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
-      </div>
+    <!-- Password -->
+    <div>
+      <label for="password" class="form-label required">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-input w-full"
+        placeholder="Enter your password"
+        required
+      >
+    </div>
 
-      <!-- Submit Button -->
-      <div class="text-center">
-        <button type="submit" class="btn-primary w-full md:w-auto px-8">Sign In</button>
-      </div>
-    </form>
-  </div>
+    <!-- Remember me + Forgot Password -->
+    <div class="flex items-center justify-between text-sm">
+      <label class="flex items-center gap-2 text-slate-300">
+        <input type="checkbox" class="accent-lime-400">
+        Remember me
+      </label>
+      <a href="/auth/forgot-password" class="text-lime-400 hover:text-lime-300 font-medium">
+        Forgot password?
+      </a>
+    </div>
+
+    <!-- Submit -->
+    <div>
+      <button type="submit" class="btn-primary w-full py-3 text-lg">
+        Sign In
+      </button>
+    </div>
+  </form>
 </div>

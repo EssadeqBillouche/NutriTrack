@@ -1,40 +1,34 @@
-import * as validator from '../utils/validator.js';
+import * as authService from '../services/auth.service.js';
 
-export const validateRegister = (req, res, next) => {
-  const { first_name, last_name, email, password } = req.body;
-
-  if (!first_name || !last_name || !email || !password) {
-    return res.status(400).json({ error: 'All fields are required' });
+export const postRegister = async (req, res) => {
+  try {
+    const { first_name, last_name, email, password } = req.body;
+    const user = await authService.register({ first_name, last_name, email, password });
+    res.status(201).json({
+      message: 'User registered successfully',
+      user: { id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email },
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  if (!validator.isValidEmail(email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
-  }
-
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters' });
-  }
-
-  next();
 };
 
-export const validateLogin = (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+export const postLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await authService.login({ email, password });
+    req.session.user = { id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email };
+    res.status(200).json({ message: 'Login successful', user: req.session.user });
+  } catch (error) {
+    res.status(401).json({ error: error.message });
   }
-
-  if (!validator.isValidEmail(email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
-  }
-
-  next();
 };
 
-export const requireAuth = (req, res, next) => {
-  if (!req.session.user) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  next();
+export const logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to log out' });
+    }
+    res.status(200).json({ message: 'Logout successful' });
+  });
 };

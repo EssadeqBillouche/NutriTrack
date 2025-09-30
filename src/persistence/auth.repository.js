@@ -1,5 +1,4 @@
 import pool from "../config/db.js"
-import bcrypt from "b"
 
 
 export const GetUserByEmail = async (email) =>{
@@ -8,8 +7,8 @@ export const GetUserByEmail = async (email) =>{
     return result.rows[0]
 }
 
-export const creatUser = async ({firstName, LastName, email, password, birthDay, gender}) => {
+export const creatUser = async ({firstName, LastName, email, hashPassword, birthDay, gender}) => {
     const query = "insert into users (first_name, last_name, email, password_hash, gender) ($1, $2, $3, $4, $5, $6)"
-    const sendQuery = await pool.query(query, [firstName, LastName, email, password, birthDay, gender]);
-    return sendQuery.row(0);
+    const sendQuery = await pool.query(query, [firstName, LastName, email, hashPassword, birthDay, gender]);
+    return sendQuery.rows(0);
 }

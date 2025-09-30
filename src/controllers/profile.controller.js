@@ -10,6 +10,5 @@ const getProfile = async (req, res, next) => {
   }
 };
 
-export default {
-  getProfile,
-};
+export default getProfile
+

@@ -1,0 +1,70 @@
+<div class="form-container max-w-md mx-auto bg-slate-800 rounded-2xl shadow-lg p-6">
+  <!-- Header -->
+  <div class="text-center mb-6">
+    <h1 class="text-2xl font-bold text-white">Create Account</h1>
+    <p class="text-slate-400 text-sm mt-1">
+      Already have an account?
+      <a href="/auth/login" class="text-lime-400 font-medium hover:text-lime-300">Sign in</a>
+    </p>
+
+    <% if (error) { %>
+      <p class="text-red-500 mt-3 text-sm"><%= error %></p>
+    <% } %>
+  </div>
+
+  <!-- Form -->
+  <form action="/auth/register" method="POST" class="space-y-5">
+    <!-- Name -->
+    <div class="grid grid-cols-2 gap-4">
+      <input type="text" name="first_name" class="form-input" placeholder="First Name" required>
+      <input type="text" name="last_name" class="form-input" placeholder="Last Name" required>
+    </div>
+
+    <!-- Email -->
+    <input type="email" name="email" class="form-input w-full" placeholder="Email" required>
+
+    <!-- Password -->
+    <div class="grid grid-cols-2 gap-4">
+      <input type="password" name="password" class="form-input" placeholder="Password" required>
+      <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm" required>
+    </div>
+
+    <!-- Age & Gender -->
+    <div class="grid grid-cols-2 gap-4">
+      <input type="number" name="age" class="form-input" placeholder="Age" min="13" max="90" required>
+      <select name="gender" class="form-input" required>
+        <option value="" disabled selected>Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+
+    <!-- Height & Weight -->
+    <div class="grid grid-cols-2 gap-4">
+      <input type="number" name="height" class="form-input" placeholder="Height (cm)" min="100" max="250" required>
+      <input type="number" name="weight" class="form-input" placeholder="Weight (kg)" min="30" max="150" required>
+    </div>
+
+    <!-- Activity -->
+    <select name="activityLevel" class="form-input w-full" required>
+      <option value="" disabled selected>Activity Level</option>
+      <option value="sedentary">Sedentary</option>
+      <option value="lightly-active">Lightly Active</option>
+      <option value="moderately-active">Moderate</option>
+      <option value="very-active">Very Active</option>
+      <option value="extremely-active">Extreme</option>
+    </select>
+
+    <!-- Goal -->
+    <select name="goals" class="form-input w-full" required>
+      <option value="" disabled selected>Goal</option>
+      <option value="lose-weight">Lose Weight</option>
+      <option value="maintain-weight">Maintain</option>
+      <option value="gain-weight">Gain</option>
+      <option value="build-muscle">Muscle</option>
+      <option value="improve-health">Health</option>
+    </select>
+    <!-- Button -->
+    <button type="submit" class="btn-primary w-full py-3 text-lg">Create Account</button>
+  </form>
+</div>

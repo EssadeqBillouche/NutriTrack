@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRouter);
-app.use('/dashboard/meal', mealAnalysisRouter);
-app.use('/dashboard/profile', profileRouter);
-app.use('/dashboard/reports', reportsRouter);
-app.use('/dashboard/ai', aiRouter);
+app.use('/meal', mealAnalysisRouter);
+app.use('/profile', profileRouter);
+app.use('/reports', reportsRouter);
+app.use('/ai', aiRouter);
 
 export default app;

@@ -2,10 +2,11 @@ import { render } from 'ejs';
 import * as authService from '../services/auth.service.js';
 import { title } from 'process';
 import { error } from 'console';
+import { scrypt } from 'crypto';
 
 
 export const getRegister = (req, res) => {
-  res.render('auth/register', { title: 'Register', error : null });
+  res.render('auth/register', { title: 'Register', error : null, scripts :["/js/register.js", "/js/axios.min.js"] });
 }
 export const postRegister = async (req, res) => {
   try {

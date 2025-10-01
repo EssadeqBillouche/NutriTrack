@@ -13,26 +13,26 @@
   </div>
 
   <!-- Form -->
-  <form action="/auth/register" method="POST" class="space-y-5">
+  <form action="/auth/register" method="POST"  id = "registerForm" class="space-y-5">
     <!-- Name -->
     <div class="grid grid-cols-2 gap-4">
-      <input type="text" name="first_name" class="form-input" placeholder="First Name" required>
-      <input type="text" name="last_name" class="form-input" placeholder="Last Name" required>
+      <input id= 'firstName' type="text" name="first_name" class="form-input" placeholder="First Name" required>
+      <input id= 'lastName' type="text" name="last_name" class="form-input" placeholder="Last Name" required>
     </div>
 
     <!-- Email -->
-    <input type="email" name="email" class="form-input w-full" placeholder="Email" required>
+    <input id ='email' type="email" name="email" class="form-input w-full" placeholder="Email" required>
 
     <!-- Password -->
     <div class="grid grid-cols-2 gap-4">
-      <input type="password" name="password" class="form-input" placeholder="Password" required>
-      <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm" required>
+      <input id = 'password' type="password" name="password" class="form-input" placeholder="Password" required>
+      <input id = 'confirmPassword'type="password" name="confirmPassword" class="form-input" placeholder="Confirm" required>
     </div>
 
     <!-- Age & Gender -->
     <div class="grid grid-cols-2 gap-4">
-      <input type="number" name="age" class="form-input" placeholder="Age" min="13" max="90" required>
-      <select name="gender" class="form-input" required>
+      <input id = 'age' type="number" name="age" class="form-input" placeholder="Age" min="13" max="90" required>
+      <select id = 'gender' name="gender" class="form-input" required>
         <option value="" disabled selected>Gender</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -41,12 +41,12 @@
 
     <!-- Height & Weight -->
     <div class="grid grid-cols-2 gap-4">
-      <input type="number" name="height" class="form-input" placeholder="Height (cm)" min="100" max="250" required>
-      <input type="number" name="weight" class="form-input" placeholder="Weight (kg)" min="30" max="150" required>
+      <input id = 'height' type="number" name="height" class="form-input" placeholder="Height (cm)" min="100" max="250" required>
+      <input id = 'weight' type="number" name="weight" class="form-input" placeholder="Weight (kg)" min="30" max="150" required>
     </div>
 
     <!-- Activity -->
-    <select name="activityLevel" class="form-input w-full" required>
+    <select id ='activitylevel' name="activityLevel" class="form-input w-full" required>
       <option value="" disabled selected>Activity Level</option>
       <option value="sedentary">Sedentary</option>
       <option value="lightly-active">Lightly Active</option>
@@ -56,7 +56,7 @@
     </select>
 
     <!-- Goal -->
-    <select name="goals" class="form-input w-full" required>
+    <select  id = 'goal' name="goals" class="form-input w-full" required>
       <option value="" disabled selected>Goal</option>
       <option value="lose-weight">Lose Weight</option>
       <option value="maintain-weight">Maintain</option>
@@ -65,6 +65,6 @@
       <option value="improve-health">Health</option>
     </select>
     <!-- Button -->
-    <button type="submit" class="btn-primary w-full py-3 text-lg">Create Account</button>
+    <button  type="submit" class="btn-primary w-full py-3 text-lg">Create Account</button>
   </form>
 </div>

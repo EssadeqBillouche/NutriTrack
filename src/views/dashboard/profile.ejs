@@ -1,19 +1,36 @@
-<%- include('dashboard-layout', { 
-    title: 'Profil Utilisateur', 
-    currentPage: 'profile' 
-}) %>
+<%- include('layouts/head') %>
+<body class="overflow-x-hidden bg-slate-900 text-white font-inter scroll-smooth">
+    <!-- Dashboard Layout -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <%- include('layouts/side-bar', {currentPage: 'profile'}) %>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Header -->
+            <%- include('layouts/header', {pageTitle: 'Profil Utilisateur'}) %>
+            
+            <!-- Main Profile Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <% if (error) { %>
+                    <div class="bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded-lg mb-6">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <%= error %>
+                    </div>
+                <% } %>
 
-<!-- Header Actions -->
-<div class="flex items-center space-x-4">
-    <button class="bg-lime-500 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-lime-400 flex items-center space-x-2">
-        <i class="fas fa-save"></i>
-        <span>Sauvegarder</span>
-    </button>
-    <button class="bg-slate-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-600 flex items-center space-x-2">
-        <i class="fas fa-edit"></i>
-        <span>Modifier</span>
-    </button>
-</div>
+                <% if (user) { %>
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4 mb-6">
+                    <button class="bg-lime-500 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-lime-400 flex items-center space-x-2">
+                        <i class="fas fa-save"></i>
+                        <span>Sauvegarder</span>
+                    </button>
+                    <button class="bg-slate-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-600 flex items-center space-x-2">
+                        <i class="fas fa-edit"></i>
+                        <span>Modifier</span>
+                    </button>
+                </div>
 
 <!-- Profile Overview -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
@@ -32,10 +49,12 @@
                 </div>
                 
                 <!-- User Info -->
-                <h2 class="text-2xl font-bold mb-2">John Doe</h2>
-                <p class="text-slate-400 mb-4">john.doe@email.com</p>
+                <h2 class="text-2xl font-bold mb-2"><%= user.first_name %> <%= user.last_name %></h2>
+                <p class="text-slate-400 mb-4"><%= user.email %></p>
                 <div class="flex items-center justify-center space-x-2 mb-4">
-                    <span class="bg-lime-500/20 text-lime-400 px-3 py-1 rounded-full text-sm">Weight Management</span>
+                    <span class="bg-lime-500/20 text-lime-400 px-3 py-1 rounded-full text-sm">
+                        <%= profileTypeDisplay || 'Profil non défini' %>
+                    </span>
                 </div>
                 
                 <!-- Stats -->
@@ -63,31 +82,31 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Prénom</label>
-                        <input type="text" value="John" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                        <input type="text" value="<%= user.first_name || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Nom</label>
-                        <input type="text" value="Doe" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                        <input type="text" value="<%= user.last_name || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
-                        <input type="email" value="john.doe@email.com" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                        <input type="email" value="<%= user.email || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
                     </div>
                 </div>
                 
                 <!-- Health Info -->
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Âge</label>
-                        <input type="number" value="28" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Date de naissance</label>
+                        <input type="date" value="<%= user.date_of_birth || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Taille (cm)</label>
-                        <input type="number" value="175" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                        <input type="number" value="<%= user.height_cm || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Poids (kg)</label>
-                        <input type="number" value="70" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Poids actuel (kg)</label>
+                        <input type="number" value="<%= user.current_weight_kg || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
                     </div>
                 </div>
             </div>
@@ -103,29 +122,18 @@
         
         <div class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Objectif Principal</label>
-                <select class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
-                    <option>Perte de poids</option>
-                    <option>Prise de masse</option>
-                    <option>Maintien</option>
-                    <option>Performance sportive</option>
-                </select>
+                <label class="block text-sm font-medium text-slate-300 mb-2">Type de Profil</label>
+                <input type="text" value="<%= profileTypeDisplay || 'Non défini' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
             </div>
             
             <div>
                 <label class="block text-sm font-medium text-slate-300 mb-2">Poids Cible (kg)</label>
-                <input type="number" value="65" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
+                <input type="number" value="<%= user.target_weight_kg || '' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
             </div>
             
             <div>
                 <label class="block text-sm font-medium text-slate-300 mb-2">Niveau d'Activité</label>
-                <select class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
-                    <option>Sédentaire</option>
-                    <option>Légèrement actif</option>
-                    <option>Modérément actif</option>
-                    <option>Très actif</option>
-                    <option>Extrêmement actif</option>
-                </select>
+                <input type="text" value="<%= user.activity_level || 'Non défini' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
             </div>
         </div>
     </div>
@@ -136,49 +144,42 @@
         
         <div class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Régime Alimentaire</label>
-                <select class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none">
-                    <option>Omnivore</option>
-                    <option>Végétarien</option>
-                    <option>Végétalien</option>
-                    <option>Keto</option>
-                    <option>Paleo</option>
-                </select>
+                <label class="block text-sm font-medium text-slate-300 mb-2">Discipline Sportive</label>
+                <input type="text" value="<%= user.athlete_discipline || 'Non défini' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
             </div>
             
             <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Allergies</label>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm flex items-center">
-                        <i class="fas fa-times mr-2 cursor-pointer"></i>
-                        Gluten
-                    </span>
-                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm flex items-center">
-                        <i class="fas fa-times mr-2 cursor-pointer"></i>
-                        Lactose
-                    </span>
-                    <button class="bg-slate-700 border border-slate-600 rounded-full px-3 py-1 text-sm hover:bg-slate-600 transition-colors">
-                        <i class="fas fa-plus mr-1"></i>
-                        Ajouter
-                    </button>
-                </div>
+                <label class="block text-sm font-medium text-slate-300 mb-2">Fréquence d'Entraînement</label>
+                <input type="text" value="<%= user.training_frequency || 'Non défini' %>" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white focus:border-lime-500 focus:outline-none" readonly>
             </div>
             
             <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Aliments Préférés</label>
+                <label class="block text-sm font-medium text-slate-300 mb-2">Conditions de Santé</label>
                 <div class="flex flex-wrap gap-2">
-                    <span class="bg-lime-500/20 text-lime-400 px-3 py-1 rounded-full text-sm flex items-center">
-                        <i class="fas fa-times mr-2 cursor-pointer"></i>
-                        Légumes verts
-                    </span>
-                    <span class="bg-lime-500/20 text-lime-400 px-3 py-1 rounded-full text-sm flex items-center">
-                        <i class="fas fa-times mr-2 cursor-pointer"></i>
-                        Poisson
-                    </span>
-                    <button class="bg-slate-700 border border-slate-600 rounded-full px-3 py-1 text-sm hover:bg-slate-600 transition-colors">
-                        <i class="fas fa-plus mr-1"></i>
-                        Ajouter
-                    </button>
+                    <% if (user.has_diabetes) { %>
+                        <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Diabète
+                        </span>
+                    <% } %>
+                    <% if (user.has_hypertension) { %>
+                        <span class="bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-heartbeat mr-2"></i>
+                            Hypertension
+                        </span>
+                    <% } %>
+                    <% if (user.has_obesity) { %>
+                        <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-weight mr-2"></i>
+                            Obésité
+                        </span>
+                    <% } %>
+                    <% if (!user.has_diabetes && !user.has_hypertension && !user.has_obesity) { %>
+                        <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-check mr-2"></i>
+                            Aucune condition particulière
+                        </span>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -195,9 +196,9 @@
             <div class="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
                 <i class="fas fa-weight text-blue-500 text-xl"></i>
             </div>
-            <div class="text-2xl font-bold text-blue-400">22.9</div>
+            <div class="text-2xl font-bold text-blue-400"><%= bmi || 'N/A' %></div>
             <div class="text-sm text-slate-400">IMC</div>
-            <div class="text-xs text-lime-400 mt-1">Normal</div>
+            <div class="text-xs text-lime-400 mt-1"><%= bmiCategory || 'Non calculable' %></div>
         </div>
         
         <!-- Body Fat -->
@@ -262,49 +263,17 @@
     </div>
 </div>
 
-<script>
-// Profile form interactions
-document.addEventListener('DOMContentLoaded', function() {
-    // Add allergy/preference functionality
-    const addButtons = document.querySelectorAll('button[class*="Ajouter"]');
-    
-    addButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const input = prompt('Ajouter un élément:');
-            if (input && input.trim()) {
-                const container = this.parentElement;
-                const newTag = document.createElement('span');
-                newTag.className = this.previousElementSibling.className;
-                newTag.innerHTML = `<i class="fas fa-times mr-2 cursor-pointer"></i>${input.trim()}`;
-                container.insertBefore(newTag, this);
-                
-                // Add remove functionality
-                newTag.querySelector('i').addEventListener('click', function() {
-                    newTag.remove();
-                });
-            }
-        });
-    });
-    
-    // Remove tag functionality
-    document.querySelectorAll('span[class*="rounded-full"] i[class*="fa-times"]').forEach(icon => {
-        icon.addEventListener('click', function() {
-            this.parentElement.remove();
-        });
-    });
-    
-    // Form validation
-    const inputs = document.querySelectorAll('input, select');
-    inputs.forEach(input => {
-        input.addEventListener('change', function() {
-            if (this.value.trim()) {
-                this.classList.remove('border-red-500');
-                this.classList.add('border-lime-500');
-            } else {
-                this.classList.remove('border-lime-500');
-                this.classList.add('border-red-500');
-            }
-        });
-    });
-});
-</script>
+                <% } else { %>
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-xl text-center">
+                        <i class="fas fa-user-slash text-6xl text-slate-400 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Profil non trouvé</h3>
+                        <p class="text-slate-400">Aucune donnée de profil disponible pour cet utilisateur.</p>
+                    </div>
+                <% } %>
+            </main>
+        </div>
+    </div>
+
+    <%- include('layouts/scripts') %>
+</body>
+</html>

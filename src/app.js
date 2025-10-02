@@ -4,7 +4,7 @@ import authRouter from './routes/auth.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js'
 import mealAnalysisRouter from './routes/mealAnalysis.routes.js'
 import profileRouter from './routes/profile.routes.js'
-import reportsRouter from './routes/profile.routes.js'
+import reportsRouter from './routes/reports.routes.js'
 import aiRouter from './routes/ai.routes.js'
 import expressLayouts from 'express-ejs-layouts';
 

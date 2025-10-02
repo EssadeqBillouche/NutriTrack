@@ -1,5 +1,12 @@
+import { render } from 'ejs';
 import * as authService from '../services/auth.service.js';
+import { title } from 'process';
+import { error } from 'console';
 
+
+export const getRegister = (req, res) => {
+  res.render('auth/register', { title: 'Register', error : null });
+}
 export const postRegister = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
@@ -12,6 +19,10 @@ export const postRegister = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getLogin = (req, res) =>{
+  res.render('auth/login', {title : 'Login', error : null});
+}
 
 export const postLogin = async (req, res) => {
   try {

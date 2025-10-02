@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+import app from 'express'
+const router = app.Router();
 
 router.get('/weekly', (req, res) => {
 });
@@ -15,4 +15,4 @@ router.get('/Alerts',(req, res) =>{
 router.get('Admin review',(req,res) =>{
 })
 // export
-module.exports = router;
+export default router;

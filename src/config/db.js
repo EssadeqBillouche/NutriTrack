@@ -8,9 +8,9 @@ dotenv.config()
 const pool = new Pool ({
     user : process.env.DB_USER || 'postgres',
     host : process.env.DB_HOST || 'localhost',
-    database : process.env.DB_DATABASE || 'nutritrack',
-    password : process.env.DB_PASSWORD || 'password',
-    port : process.env.DB_PORT || 5432
+    database : process.env.DB_DATABASE || 'NuriTrack',
+    password : process.env.DB_PASSWORD || '1111',
+    port : process.env.DB_PORT || 5432  
 })
 
 console.log(process.env.DB_NAME);

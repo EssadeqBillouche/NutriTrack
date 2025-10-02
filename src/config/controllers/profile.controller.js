@@ -2,7 +2,7 @@ import * as profileService from '../../services/profile.service.js';
 
 export const getProfile = async (req, res, next) => {
   try {
-    const userId = req.user.id; // Auth middleware supposes user info on req
+    const userId = req.user.id; 
     const profileData = await profileService.fetchUserProfile(userId);
     res.json(profileData);
   } catch (error) {
@@ -17,10 +17,11 @@ export const getProfileStatic = async (req, res) => {
     const userData = await profileService.fetchUserWithProfile(userId);
     
     if (!userData) {
-      // If no user data found, show a message about database setup
+      // if no user data found
       return res.status(404).render('dashboard/profile', { 
         title: 'Profil Utilisateur',
         error: 'Aucune donnée de profil trouvée. Veuillez configurer la base de données et exécuter: npm run seed-profile',
+        scripts: [],
         user: null 
       });
     }
@@ -35,6 +36,7 @@ export const getProfileStatic = async (req, res) => {
       bmi: bmi,
       bmiCategory: bmiCategory,
       profileTypeDisplay: profileTypeDisplay,
+      scripts: [],
       error: null
     });
   } catch (error) {
@@ -42,6 +44,7 @@ export const getProfileStatic = async (req, res) => {
     res.status(500).render('dashboard/profile', { 
       title: 'Profil Utilisateur',
       error: 'Erreur de connexion à la base de données. Veuillez vérifier votre configuration PostgreSQL.',
+      scripts: [],
       user: null 
     });
   }

@@ -4,11 +4,9 @@ async function seedProfileData() {
   try {
     console.log('Seeding profile data...');
     
-    // First, check if user exists
     const userResult = await pool.query('SELECT id FROM public.users WHERE id = 1');
     
     if (userResult.rows.length === 0) {
-      // Create a test user
       console.log('Creating test user...');
       await pool.query(`
         INSERT INTO public.users (first_name, last_name, email, password_hash, date_of_birth, gender)
@@ -16,11 +14,9 @@ async function seedProfileData() {
       `, ['John', 'Doe', 'john.doe@example.com', 'hashed_password', '1995-01-15', 'male']);
     }
     
-    // Check if profile exists for user 1
     const profileResult = await pool.query('SELECT id FROM public.user_profiles WHERE user_id = 1');
     
     if (profileResult.rows.length === 0) {
-      // Create a test profile
       console.log('Creating test profile...');
       await pool.query(`
         INSERT INTO public.user_profiles (

@@ -8,7 +8,7 @@ const FileStoreInstance = FileStore(session);
 
 const sessionConfig = session({
   store: new FileStoreInstance({ path: './sessions' }),
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'nutritrack-secret-key-2024',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 * 24 },

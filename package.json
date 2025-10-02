@@ -21,6 +21,7 @@
     "build-css-prod": "tailwindcss -i ./src/public/css/style.css -o ./src/public/css/output.css --minify"
   },
   "dependencies": {
+    "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "dotenv": "^17.2.3",

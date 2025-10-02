@@ -152,6 +152,11 @@
 <%- body %>
   </main>
 
-  <script src="/js/auth.js"></script>
+  <% if (scripts) { %>
+  <% scripts.forEach(script => { %>
+    <script src="<%= script %>"></script>
+  <% }) %>
+<% } %>
+
 </body>
 </html>

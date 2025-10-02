@@ -1,8 +1,6 @@
-import { render } from 'ejs';
 import * as authService from '../services/auth.service.js';
-import { title } from 'process';
-import { error } from 'console';
-import { scrypt } from 'crypto';
+import sessionConfig from '../config/session.js';
+
 
 
 export const getRegister = (req, res) => {
@@ -10,8 +8,8 @@ export const getRegister = (req, res) => {
 }
 export const postRegister = async (req, res) => {
   try {
-    const { first_name, last_name, email, password } = req.body;
-    const user = await authService.register({ first_name, last_name, email, password });
+    const { first_name, last_name, email, password, age, gender } = req.body;
+    const user = await authService.register({ first_name, last_name, email, password, age, gender});
     res.status(201).json({
       message: 'User registered successfully',
       user: { id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email },
@@ -22,15 +20,16 @@ export const postRegister = async (req, res) => {
 };
 
 export const getLogin = (req, res) =>{
-  res.render('auth/login', {title : 'Login', error : null});
+  res.render('auth/login', {title : 'Login', error : null, scripts : ['/js/login.js']});
 }
 
 export const postLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await authService.login({ email, password });
-    req.session.user = { id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email };
-    res.status(200).json({ message: 'Login successful', user: req.session.user });
+    
+    req.session.user = {id: user.id, first_name : user.first_name, last_name : user.last_name }
+    res.status(200).json({ message: 'Login successful'}); 
   } catch (error) {
     res.status(401).json({ error: error.message });
   }

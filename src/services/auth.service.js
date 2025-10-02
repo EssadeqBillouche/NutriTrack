@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 export const register = async ({ first_name, last_name, email, password }) => {
   const existingUser = await authRepository.findUserByEmail(email);
   if (existingUser) {
-    throw new Error('Email already in use');
+    throw new Error('Email alreaddddy in use before');
   }
   return await authRepository.createUser({ first_name, last_name, email, password });
 };

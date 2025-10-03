@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "test-db": "node src/config/test-db",
+    "seed-profile": "node scripts/seed-profile.js",
     "build-css": "tailwindcss -i ./src/public/css/style.css -o ./src/public/css/output.css --watch",
     "build-css-prod": "tailwindcss -i ./src/public/css/style.css -o ./src/public/css/output.css --minify"
   },

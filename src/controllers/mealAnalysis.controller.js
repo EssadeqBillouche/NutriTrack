@@ -11,18 +11,23 @@ const upload = multer({
         }
     },
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB
+        fileSize: 5 * 1024 * 1024
     }
 });
 
 export const analyzeMealImageUpload = async (req, res) => {
     try {
+        // console.log(req.file);
         if (!req.file) {
             return res.status(400).json({
                 success: false,
                 message: 'No image file uploaded'
             });
         }
+
+        const buffer = req.file.buffer;
+        console.log(buffer.length);
+        
 
         const fileInfo = {
             filename: req.file.originalname,
@@ -31,6 +36,7 @@ export const analyzeMealImageUpload = async (req, res) => {
             uploadedAt: new Date().toISOString()
         };
 
+        // console.log(fileInfo)
         res.json({
             success: true,
             message: 'Image uploaded successfully',
@@ -47,7 +53,7 @@ export const analyzeMealImageUpload = async (req, res) => {
     }
 };
 
-export const renderUploadPage = (req, res) => {
+export const getUploadPage = (req, res) => {
     res.status(200).json({ message: 'Upload page' });
     res.render('meals/upload');
 };

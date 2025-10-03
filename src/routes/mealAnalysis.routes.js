@@ -1,13 +1,13 @@
 import express from 'express';
 import { 
     analyzeMealImageUpload, 
-    renderUploadPage, 
+    getUploadPage, 
     uploadMiddleware 
 } from '../controllers/mealAnalysis.controller.js';
 
 const router = express.Router();
 
-router.get('/upload', renderUploadPage);
+router.get('/upload', getUploadPage);
 
 router.post('/analyze', uploadMiddleware, analyzeMealImageUpload);
 

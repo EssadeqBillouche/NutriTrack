@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import authRouter from './routes/auth.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js'
-import mealAnalysisRouter from './routes/mealAnalysis.routes.js'
+import mealAnalysisRoutes from './routes/mealAnalysis.routes.js'
 import profileRouter from './routes/profile.routes.js'
 import reportsRouter from './routes/reports.routes.js'
 import aiRouter from './routes/ai.routes.js'
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter);
 app.use('/dashboard', dashboardRoutes);
-app.use('/meal', mealAnalysisRouter);
+app.use('/meal', mealAnalysisRoutes);
 app.use('/profile', profileRouter);
 app.use('/reports', reportsRouter);
 app.use('/ai', aiRouter);

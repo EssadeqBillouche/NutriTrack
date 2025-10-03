@@ -1,39 +1,17 @@
-export const analyzeFoodFromImage = (req, res) => {
-    //
+import * as mealRepositories from '../persistence/meals.repository.js';
+
+export const analyzeMealImage = async (buffer, mimetype) => {
+    return {
+        foods: [],
+        nutrients: {},
+        message: 'AI analysis would be implemented here'
+    };
+};
+
+export const fetchMeals = async (userId) => {
+    return await mealRepositories.getMealsByUserId(userId);
 }
 
-export const extractNutritionalData = (req, res) => {
-    //
-}
-
-export const detectDietaryDeviations = (req, res) => {
-    //
-}
-
-export const calculateMealMetrics = (req, res) => {
-    //
-}
-
-export const generateMealRecommendations = (req, res) => {
-    //
-}
-
-export const getUserMealHistory = (req, res) => {
-    //
-}
-
-export const getMealAnalysisDetails = (req, res) => {
-    //
-}
-
-export const getRecentAnalyses = (req, res) => {
-    //
-}
-
-export const getMealDeviations = (req, res) => {
-    //
-}
-
-export const saveMealAnalysis = (req, res) => {
-    //
+export const getMealWithImage = async (userId, image) => {
+    return await mealRepositories.getMealByUserAndImage(userId, image);
 }

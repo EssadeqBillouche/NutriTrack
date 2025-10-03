@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Meal - NutriScan.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #a3e635;
+            --primary-dark: #84cc16;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+
+        .dashboard-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .active-nav-item {
+            background-color: rgba(163, 230, 53, 0.1);
+            border-left: 4px solid #a3e635;
+            color: #a3e635;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+    <!-- Dashboard Layout -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-slate-900 p-6 hidden md:block">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 mb-10">
+                <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-br from-lime-400 via-green-500 to-emerald-600 flex items-center justify-center relative">
+                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                        <div class="w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500"></div>
+                    </div>
+                </div>
+                <span class="text-2xl font-bold text-white">NutriScan.AI</span>
+            </div>
+
+            <!-- User Profile -->
+            <div class="flex items-center space-x-3 mb-8 p-3 rounded-lg bg-slate-800">
+                <div
+                    class="w-12 h-12 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold">AJ</span>
+                </div>
+                <div>
+                    <p class="font-medium">Abdelilah</p>
+                    <p class="text-sm text-slate-400">Weight Management</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="/dashboard"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-home w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/meal-plans"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-utensils w-5 text-center"></i>
+                    <span>Meal Plans</span>
+                </a>
+                <a href="/ai-analysis" class="flex items-center space-x-3 p-3 rounded-lg active-nav-item">
+                    <i class="fas fa-camera w-5 text-center"></i>
+                    <span>Scan Meal</span>
+                </a>
+                <a href="/progress"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span>Progress</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Header -->
+            <header class="bg-slate-800 p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="mobile-menu-button" class="md:hidden text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold">Upload Meal</h1>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-slate-300 hover:text-white">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-bold">AJ</span>
+                            </div>
+                            <span>Abdelilah</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Welcome Section -->
+                <div class="dashboard-gradient rounded-2xl p-6 mb-6 card-shadow">
+                    <div class="text-center">
+                        <h2 class="text-2xl font-bold mb-2">Upload Meal Photo</h2>
+                        <p class="text-slate-300">Simply upload a photo of your meal for AI analysis</p>
+                    </div>
+                </div>
+
+                <!-- Simple Upload Form -->
+                <div class="max-w-md mx-auto">
+                    <div class="bg-slate-800 rounded-xl p-8 card-shadow">
+                        <form action="/analyze" method="POST" enctype="multipart/form-data" class="space-y-6">
+                            <!-- File Input -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    Select Meal Photo
+                                </label>
+                                <input type="file" name="mealImage" accept="image/*" required
+                                    class="w-full text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-lime-500 file:text-slate-900 hover:file:bg-lime-400">
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit"
+                                class="w-full bg-lime-500 text-slate-900 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors flex items-center justify-center space-x-2">
+                                <i class="fas fa-robot"></i>
+                                <span>Analyze with AI</span>
+                            </button>
+                        </form>
+
+                        <!-- Simple Tips -->
+                        <div class="mt-8 pt-6 border-t border-slate-700">
+                            <h3 class="text-sm font-semibold text-slate-400 uppercase mb-3">Tips for better results</h3>
+                            <ul class="text-sm text-slate-400 space-y-2">
+                                <li class="flex items-center space-x-2">
+                                    <i class="fas fa-sun text-yellow-400"></i>
+                                    <span>Take photos in good lighting</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <i class="fas fa-utensils text-green-400"></i>
+                                    <span>Make sure all food is visible</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <i class="fas fa-ruler text-blue-400"></i>
+                                    <span>Include a reference for scale</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900 z-50 hidden md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-lime-400 via-green-500 to-emerald-600 flex items-center justify-center">
+                    </div>
+                    <span class="text-2xl font-bold text-white">NutriScan.AI</span>
+                </div>
+                <button id="close-mobile-menu" class="text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <nav class="space-y-4">
+                <a href="/dashboard" class="block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-home mr-3"></i>Dashboard
+                </a>
+                <a href="/meal-plans" class="block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-utensils mr-3"></i>Meal Plans
+                </a>
+                <a href="/ai-analysis"
+                    class="block p-3 rounded-lg bg-lime-500/10 text-lime-400 border-l-4 border-lime-500">
+                    <i class="fas fa-camera mr-3"></i>Scan Meal
+                </a>
+                <a href="/progress" class="block p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-chart-line mr-3"></i>Progress
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        // Simple mobile menu toggle
+        document.getElementById('mobile-menu-button')?.addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+
+        document.getElementById('close-mobile-menu')?.addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+    </script>
+</body>
+
+</html>

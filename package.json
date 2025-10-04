@@ -30,6 +30,7 @@
     "express": "^5.1.0",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.2",
+    "langchain": "^0.3.35",
     "multer": "^2.0.2",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3",

@@ -1,6 +1,5 @@
-import app from 'express'
+import { Router } from "express";
 
-const router = app.Router();
-
+const router = Router;
 
 export default router;

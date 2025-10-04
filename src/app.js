@@ -29,7 +29,7 @@ app.set('layout', 'auth/main');
 app.set("views", path.join(__dirname, "views"));
 
 app.get('/', (req, res) => {
-    res.render("home/home", { title : 'Home'});
+    res.render("home/home", { title : 'Home', scripts :[], layout : false});
 });
 
 app.use('/auth', authRouter);

@@ -33,6 +33,30 @@
             border-left: 4px solid #a3e635;
             color: #a3e635;
         }
+
+        .upload-area {
+            border: 2px dashed #475569;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area.dragover {
+            border-color: #a3e635;
+            background-color: rgba(163, 230, 53, 0.05);
+        }
+
+        .preview-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .preview-container.show {
+            max-height: 500px;
+        }
+
+        #camera-feed {
+            transform: scaleX(-1); /* Mirror the camera feed for more natural feel */
+        }
     </style>
 </head>
 
@@ -122,26 +146,107 @@
                     </div>
                 </div>
 
-                <!-- Simple Upload Form -->
+                <!-- Upload Options -->
                 <div class="max-w-md mx-auto">
                     <div class="bg-slate-800 rounded-xl p-8 card-shadow">
-                        <form action="/analyze" method="POST" enctype="multipart/form-data" class="space-y-6">
-                            <!-- File Input -->
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">
-                                    Select Meal Photo
-                                </label>
-                                <input type="file" name="mealImage" accept="image/*" required
-                                    class="w-full text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-lime-500 file:text-slate-900 hover:file:bg-lime-400">
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit"
-                                class="w-full bg-lime-500 text-slate-900 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors flex items-center justify-center space-x-2">
-                                <i class="fas fa-robot"></i>
-                                <span>Analyze with AI</span>
+                        <!-- Upload Method Tabs -->
+                        <div class="flex mb-6 bg-slate-700 rounded-lg p-1">
+                            <button id="upload-tab" class="flex-1 py-2 rounded-md font-medium transition-colors bg-lime-500 text-slate-900">
+                                Upload Image
                             </button>
-                        </form>
+                            <button id="camera-tab" class="flex-1 py-2 rounded-md font-medium transition-colors text-slate-300 hover:text-white">
+                                Take Photo
+                            </button>
+                        </div>
+
+                        <!-- Upload Section -->
+                        <div id="upload-section" class="space-y-6">
+                            <form action="/analyze" method="POST" enctype="multipart/form-data" class="space-y-6" id="upload-form">
+                                <!-- Upload Area -->
+                                <div class="upload-area rounded-xl p-8 text-center cursor-pointer" id="drop-area">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-slate-500 mb-4"></i>
+                                    <p class="text-slate-300 mb-2">Drag & drop your meal photo here</p>
+                                    <p class="text-slate-500 text-sm mb-4">or</p>
+                                    <label for="file-input" class="bg-lime-500 text-slate-900 py-2 px-6 rounded-lg font-medium cursor-pointer hover:bg-lime-400 transition-colors inline-block">
+                                        Browse Files
+                                    </label>
+                                    <input type="file" id="file-input" name="mealImage" accept="image/*" class="hidden" required>
+                                    <p class="text-slate-500 text-xs mt-4">Supports JPG, PNG, WebP (max 10MB)</p>
+                                </div>
+
+                                <!-- Image Preview -->
+                                <div id="preview-container" class="preview-container">
+                                    <div class="bg-slate-700 rounded-xl p-4">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <h3 class="font-medium">Preview</h3>
+                                            <button type="button" id="remove-image" class="text-red-400 hover:text-red-300">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <div class="relative">
+                                            <img id="preview-image" src="" alt="Preview" class="w-full h-auto rounded-lg max-h-64 object-contain">
+                                            <div class="absolute inset-0 flex items-center justify-center hidden" id="preview-loading">
+                                                <div class="w-12 h-12 border-4 border-lime-500 border-t-transparent rounded-full animate-spin"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" id="analyze-button" disabled
+                                    class="w-full bg-slate-600 text-slate-400 py-3 rounded-lg font-bold transition-colors flex items-center justify-center space-x-2 cursor-not-allowed">
+                                    <i class="fas fa-robot"></i>
+                                    <span>Analyze with AI</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Camera Section -->
+                        <div id="camera-section" class="space-y-6 hidden">
+                            <div class="bg-slate-700 rounded-xl p-4">
+                                <div id="camera-container" class="relative">
+                                    <video id="camera-feed" autoplay playsinline class="w-full h-auto rounded-lg"></video>
+                                    <div class="absolute inset-0 flex items-center justify-center hidden" id="camera-loading">
+                                        <div class="w-12 h-12 border-4 border-lime-500 border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                    <div class="absolute bottom-4 left-0 right-0 flex justify-center">
+                                        <button id="capture-button" class="w-16 h-16 rounded-full bg-white flex items-center justify-center hover:bg-slate-100 transition-colors">
+                                            <div class="w-14 h-14 rounded-full bg-white border-4 border-slate-800"></div>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Camera Controls -->
+                                <div class="flex justify-center space-x-4 mt-4">
+                                    <button id="switch-camera" class="bg-slate-600 hover:bg-slate-500 text-white py-2 px-4 rounded-lg transition-colors">
+                                        <i class="fas fa-camera-rotate"></i> Switch Camera
+                                    </button>
+                                    <button id="retake-photo" class="bg-slate-600 hover:bg-slate-500 text-white py-2 px-4 rounded-lg transition-colors hidden">
+                                        <i class="fas fa-rotate-left"></i> Retake
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Captured Image Preview -->
+                            <div id="captured-preview-container" class="hidden">
+                                <div class="bg-slate-700 rounded-xl p-4">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <h3 class="font-medium">Captured Photo</h3>
+                                        <button type="button" id="discard-photo" class="text-red-400 hover:text-red-300">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <canvas id="captured-image" class="w-full h-auto rounded-lg max-h-64 object-contain"></canvas>
+                                </div>
+                                
+                                <!-- Use This Photo Button -->
+                                <button id="use-photo-button" 
+                                    class="w-full bg-lime-500 text-slate-900 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fas fa-robot"></i>
+                                    <span>Analyze with AI</span>
+                                </button>
+                            </div>
+                        </div>
 
                         <!-- Simple Tips -->
                         <div class="mt-8 pt-6 border-t border-slate-700">
@@ -158,6 +263,10 @@
                                 <li class="flex items-center space-x-2">
                                     <i class="fas fa-ruler text-blue-400"></i>
                                     <span>Include a reference for scale</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <i class="fas fa-ban text-red-400"></i>
+                                    <span>Avoid blurry or dark photos</span>
                                 </li>
                             </ul>
                         </div>
@@ -201,7 +310,7 @@
     </div>
 
     <script>
-        // Simple mobile menu toggle
+        // Mobile menu toggle
         document.getElementById('mobile-menu-button')?.addEventListener('click', function () {
             document.getElementById('mobile-menu').classList.remove('hidden');
         });
@@ -209,6 +318,245 @@
         document.getElementById('close-mobile-menu')?.addEventListener('click', function () {
             document.getElementById('mobile-menu').classList.add('hidden');
         });
+
+        // Tab switching
+        const uploadTab = document.getElementById('upload-tab');
+        const cameraTab = document.getElementById('camera-tab');
+        const uploadSection = document.getElementById('upload-section');
+        const cameraSection = document.getElementById('camera-section');
+
+        uploadTab.addEventListener('click', () => {
+            uploadTab.classList.add('bg-lime-500', 'text-slate-900');
+            uploadTab.classList.remove('text-slate-300', 'hover:text-white');
+            cameraTab.classList.remove('bg-lime-500', 'text-slate-900');
+            cameraTab.classList.add('text-slate-300', 'hover:text-white');
+            uploadSection.classList.remove('hidden');
+            cameraSection.classList.add('hidden');
+            stopCamera(); // Stop camera when switching to upload tab
+        });
+
+        cameraTab.addEventListener('click', () => {
+            cameraTab.classList.add('bg-lime-500', 'text-slate-900');
+            cameraTab.classList.remove('text-slate-300', 'hover:text-white');
+            uploadTab.classList.remove('bg-lime-500', 'text-slate-900');
+            uploadTab.classList.add('text-slate-300', 'hover:text-white');
+            cameraSection.classList.remove('hidden');
+            uploadSection.classList.add('hidden');
+            initializeCamera(); // Initialize camera when switching to camera tab
+        });
+
+        // File upload handling
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        const previewLoading = document.getElementById('preview-loading');
+        const removeImageBtn = document.getElementById('remove-image');
+        const analyzeButton = document.getElementById('analyze-button');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            dropArea.classList.add('dragover');
+        }
+
+        function unhighlight() {
+            dropArea.classList.remove('dragover');
+        }
+
+        // Handle dropped files
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        // Handle file input change
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    // Show loading state
+                    previewLoading.classList.remove('hidden');
+                    previewImage.classList.add('hidden');
+                    previewContainer.classList.add('show');
+                    
+                    // Create a FileReader to read the file
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Set the image source to the file data
+                        previewImage.src = e.target.result;
+                        
+                        // Hide loading and show image
+                        setTimeout(() => {
+                            previewLoading.classList.add('hidden');
+                            previewImage.classList.remove('hidden');
+                            analyzeButton.disabled = false;
+                            analyzeButton.classList.remove('bg-slate-600', 'text-slate-400', 'cursor-not-allowed');
+                            analyzeButton.classList.add('bg-lime-500', 'text-slate-900', 'hover:bg-lime-400', 'cursor-pointer');
+                        }, 500);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Please select an image file.');
+                }
+            }
+        }
+
+        // Remove image
+        removeImageBtn.addEventListener('click', function() {
+            previewContainer.classList.remove('show');
+            fileInput.value = '';
+            analyzeButton.disabled = true;
+            analyzeButton.classList.add('bg-slate-600', 'text-slate-400', 'cursor-not-allowed');
+            analyzeButton.classList.remove('bg-lime-500', 'text-slate-900', 'hover:bg-lime-400', 'cursor-pointer');
+            
+            // Reset after transition
+            setTimeout(() => {
+                previewImage.src = '';
+            }, 500);
+        });
+
+        // Camera functionality
+        const cameraFeed = document.getElementById('camera-feed');
+        const captureButton = document.getElementById('capture-button');
+        const switchCameraBtn = document.getElementById('switch-camera');
+        const retakePhotoBtn = document.getElementById('retake-photo');
+        const discardPhotoBtn = document.getElementById('discard-photo');
+        const usePhotoButton = document.getElementById('use-photo-button');
+        const cameraLoading = document.getElementById('camera-loading');
+        const capturedPreviewContainer = document.getElementById('captured-preview-container');
+        const capturedImage = document.getElementById('captured-image');
+
+        let stream = null;
+        let currentFacingMode = 'environment'; // Start with back camera
+
+        async function initializeCamera() {
+            try {
+                cameraLoading.classList.remove('hidden');
+                
+                // Stop any existing stream
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                
+                // Get camera stream
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: currentFacingMode,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                cameraFeed.srcObject = stream;
+                cameraLoading.classList.add('hidden');
+                capturedPreviewContainer.classList.add('hidden');
+                retakePhotoBtn.classList.add('hidden');
+                
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                cameraLoading.classList.add('hidden');
+                alert('Unable to access camera. Please check permissions and try again.');
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+        }
+
+        // Switch between front and back camera
+        switchCameraBtn.addEventListener('click', function() {
+            currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+            initializeCamera();
+        });
+
+        // Capture photo
+        captureButton.addEventListener('click', function() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match video
+            canvas.width = cameraFeed.videoWidth;
+            canvas.height = cameraFeed.videoHeight;
+            
+            // Draw current video frame to canvas
+            context.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+            
+            // Display the captured image
+            capturedImage.width = canvas.width;
+            capturedImage.height = canvas.height;
+            const capturedContext = capturedImage.getContext('2d');
+            capturedContext.drawImage(canvas, 0, 0);
+            
+            // Show the captured preview and hide the camera feed
+            capturedPreviewContainer.classList.remove('hidden');
+            cameraFeed.classList.add('hidden');
+            retakePhotoBtn.classList.remove('hidden');
+            captureButton.classList.add('hidden');
+        });
+
+        // Retake photo
+        retakePhotoBtn.addEventListener('click', function() {
+            capturedPreviewContainer.classList.add('hidden');
+            cameraFeed.classList.remove('hidden');
+            retakePhotoBtn.classList.add('hidden');
+            captureButton.classList.remove('hidden');
+        });
+
+        // Discard photo
+        discardPhotoBtn.addEventListener('click', function() {
+            capturedPreviewContainer.classList.add('hidden');
+            cameraFeed.classList.remove('hidden');
+            retakePhotoBtn.classList.add('hidden');
+            captureButton.classList.remove('hidden');
+        });
+
+        // Use photo for analysis
+        usePhotoButton.addEventListener('click', function() {
+            // In a real application, you would send the captured image to your server
+            // For now, we'll simulate this by showing a success message
+            alert('Photo submitted for analysis! In a real application, this would be sent to the server.');
+            
+            // Reset the camera view
+            capturedPreviewContainer.classList.add('hidden');
+            cameraFeed.classList.remove('hidden');
+            retakePhotoBtn.classList.add('hidden');
+            captureButton.classList.remove('hidden');
+        });
+
+        // Initialize camera when page loads if on camera tab
+        // But for better UX, we'll initialize only when the camera tab is clicked
     </script>
 </body>
 

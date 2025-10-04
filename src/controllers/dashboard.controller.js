@@ -12,7 +12,8 @@ export const showDashboard = async (req, res) => {
             return res.status(404).render('dashboard/dashboard', {
                 title: "Dashboard",
                 error: "Profil utilisateur non trouvé",
-                scripts: []
+                scripts: [],
+                layout : false
             });
         }
 
@@ -27,7 +28,8 @@ export const showDashboard = async (req, res) => {
                 title: "Dashboard Sportif",
                 user: userData,
                 dashboardData: dashboardData,
-                scripts: []
+                scripts: [],
+                layout:false
             });
         } else if (isChronic) {
             //chronic patient dashboard
@@ -35,7 +37,8 @@ export const showDashboard = async (req, res) => {
                 title: "Dashboard Patients Chroniques",
                 user: userData,
                 dashboardData: dashboardData,
-                scripts: []
+                scripts: [],
+                layout : false
             });
         } else {
             //general dashboard
@@ -43,7 +46,8 @@ export const showDashboard = async (req, res) => {
                 title: "Dashboard",
                 user: userData,
                 dashboardData: dashboardData,
-                scripts: []
+                scripts: [],
+                layout : false
             });
         }
 
@@ -52,7 +56,8 @@ export const showDashboard = async (req, res) => {
         res.status(500).render('dashboard/dashboard', {
             title: "Dashboard",
             error: "Erreur lors du chargement du tableau de bord",
-            scripts: []
+            scripts: [],
+            layout : false
         });
     }
     

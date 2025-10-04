@@ -2,6 +2,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Script } from 'vm';
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +13,7 @@ const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('image/')) {
-            cb(null, true);
+            cb(null, true);  
         } else {
             cb(new Error('Only image files are allowed!'), false);
         }
@@ -100,8 +101,7 @@ export const analyzeMealImageUpload = async (req, res) => {
 };
 
 export const getUploadPage = (req, res) => {
-    res.status(200).json({ message: 'Upload page' });
-    res.render('meals/upload');
+    res.render('meals/upload' ,{layout : false, scripts : false});
 };
 
 export const getImageFromMemory = (req, res) => {

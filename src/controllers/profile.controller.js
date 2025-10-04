@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import * as profileService from '../../services/profile.service.js';
 
 export const getProfile = async (req, res, next) => {
@@ -21,8 +22,8 @@ export const getProfileStatic = async (req, res) => {
       return res.status(404).render('dashboard/profile', { 
         title: 'Profil Utilisateur',
         error: 'Aucune donnée de profil trouvée. Veuillez configurer la base de données et exécuter: npm run seed-profile',
-        layout : false,
         scripts: [],
+        layout: false,
         user: null 
       });
     }
@@ -33,8 +34,8 @@ export const getProfileStatic = async (req, res) => {
 
     res.render('dashboard/profile', { 
       title: 'Profil Utilisateur',
-      layout : false,
       user: userData,
+      layout : false,
       bmi: bmi,
       bmiCategory: bmiCategory,
       profileTypeDisplay: profileTypeDisplay,
@@ -47,8 +48,8 @@ export const getProfileStatic = async (req, res) => {
       title: 'Profil Utilisateur',
       error: 'Erreur de connexion à la base de données. Veuillez vérifier votre configuration PostgreSQL.',
       scripts: [],
+      layout : false,
       user: null 
     });
   }
 };
-

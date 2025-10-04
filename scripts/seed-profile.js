@@ -1,8 +1,5 @@
 import pool from '../src/config/db.js';
-// # Seed all test data
-// npm run seed-athlete
-// npm run seed-chronic
-// npm run seed-dashboard
+
 async function seedProfileData() {
   try {
     console.log('Seeding profile data...');
@@ -41,13 +38,13 @@ async function seedProfileData() {
         '3-4_times_week' // training_frequency
       ]);
       
-      console.log(' Test profile created successfully!');
+      console.log('✅ Test profile created successfully!');
     } else {
-      console.log(' Profile already exists for user 1');
+      console.log('✅ Profile already exists for user 1');
     }
     
   } catch (error) {
-    console.error(' Error seeding profile data:', error.message);
+    console.error('❌ Error seeding profile data:', error.message);
   } finally {
     await pool.end();
   }

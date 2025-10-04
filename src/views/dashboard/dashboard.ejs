@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/head') %>
+<body class="overflow-x-hidden bg-slate-900 text-white font-inter scroll-smooth">
+    <!-- Dashboard Layout -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <%- include('layouts/side-bar', {currentPage: 'dashboard'}) %>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Header -->
+            <%- include('layouts/header', {pageTitle: 'Dashboard'}) %>
+            
+            <!-- Main Dashboard Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Welcome Section -->
+                <div class="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 mb-6 shadow-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2">Welcome back, John!</h2>
+                            <p class="text-slate-300">Here's your nutrition summary for today</p>
+                        </div>
+                        <button class="bg-lime-500 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-lime-400 mt-4 md:mt-0 flex items-center space-x-2 transition-colors">
+                            <i class="fas fa-camera"></i>
+                            <span>Scan Today's Meal</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <!-- Calories Card -->
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Calories Today</p>
+                                <p class="text-2xl font-bold mt-1">1,240 <span class="text-sm font-normal text-slate-400">/ 2,200 kcal</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-fire text-orange-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-orange-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 56%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Protein Card -->
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Protein</p>
+                                <p class="text-2xl font-bold mt-1">68 <span class="text-sm font-normal text-slate-400">/ 110g</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-dumbbell text-blue-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 62%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Carbs Card -->
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Carbohydrates</p>
+                                <p class="text-2xl font-bold mt-1">145 <span class="text-sm font-normal text-slate-400">/ 280g</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-bread-slice text-yellow-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-yellow-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 52%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Fat Card -->
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Fat</p>
+                                <p class="text-2xl font-bold mt-1">42 <span class="text-sm font-normal text-slate-400">/ 70g</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-oil-can text-red-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-red-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Content Area -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Today's Meals -->
+                        <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold">Today's Meals</h3>
+                                <button class="text-lime-400 text-sm font-medium flex items-center space-x-1">
+                                    <span>View All</span>
+                                    <i class="fas fa-chevron-right text-xs"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <!-- Breakfast -->
+                                <div class="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-egg text-orange-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Breakfast</p>
+                                            <p class="text-sm text-slate-400">Oatmeal with fruits • 320 kcal</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-lime-400 font-medium">Good Choice!</div>
+                                </div>
+                                
+                                <!-- Lunch -->
+                                <div class="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-leaf text-green-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Lunch</p>
+                                            <p class="text-sm text-slate-400">Grilled chicken salad • 450 kcal</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-lime-400 font-medium">Excellent!</div>
+                                </div>
+                                
+                                <!-- Dinner -->
+                                <div class="flex items-center justify-between p-4 bg-slate-700/50 rounded-lg">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-fish text-blue-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Dinner</p>
+                                            <p class="text-sm text-slate-400">Not logged yet</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-lime-400 text-sm font-medium flex items-center space-x-1">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Meal</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Health Insights -->
+                        <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                            <h3 class="text-xl font-bold mb-6">Health Insights</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-slate-700/50 p-4 rounded-lg">
+                                    <div class="flex items-center space-x-3 mb-3">
+                                        <div class="w-10 h-10 bg-lime-500/20 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-heartbeat text-lime-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Heart Health</p>
+                                            <p class="text-sm text-slate-400">Optimal range</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-slate-300">Your sodium intake is well within recommended limits today.</p>
+                                </div>
+                                
+                                <div class="bg-slate-700/50 p-4 rounded-lg">
+                                    <div class="flex items-center space-x-3 mb-3">
+                                        <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-weight text-blue-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Weight Management</p>
+                                            <p class="text-sm text-slate-400">On track</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-slate-300">You're on pace to reach your goal of losing 1kg this week.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- User Goals -->
+                        <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                            <h3 class="text-xl font-bold mb-6">Your Goals</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium">Weight Loss</span>
+                                        <span class="text-sm text-slate-400">4.2kg / 10kg</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-lime-500 h-2 rounded-full" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium">Daily Protein</span>
+                                        <span class="text-sm text-slate-400">68g / 110g</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 62%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium">Water Intake</span>
+                                        <span class="text-sm text-slate-400">1.2L / 2.5L</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-cyan-500 h-2 rounded-full" style="width: 48%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full mt-6 bg-slate-700 hover:bg-slate-600 text-white py-2 rounded-lg font-medium transition-colors">
+                                Adjust Goals
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Actions -->
+                        <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                            <h3 class="text-xl font-bold mb-6">Quick Actions</h3>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <button class="bg-lime-500/20 text-lime-400 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-lime-500/30 transition-colors">
+                                    <i class="fas fa-camera text-2xl mb-2"></i>
+                                    <span class="text-sm font-medium">Scan Meal</span>
+                                </button>
+                                
+                                <button class="bg-blue-500/20 text-blue-400 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-blue-500/30 transition-colors">
+                                    <i class="fas fa-utensils text-2xl mb-2"></i>
+                                    <span class="text-sm font-medium">Meal Plan</span>
+                                </button>
+                                
+                                <button class="bg-purple-500/20 text-purple-400 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-purple-500/30 transition-colors">
+                                    <i class="fas fa-chart-line text-2xl mb-2"></i>
+                                    <span class="text-sm font-medium">Progress</span>
+                                </button>
+                                
+                                <button class="bg-orange-500/20 text-orange-400 p-4 rounded-lg flex flex-col items-center justify-center hover:bg-orange-500/30 transition-colors">
+                                    <i class="fas fa-user-md text-2xl mb-2"></i>
+                                    <span class="text-sm font-medium">Insights</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <%- include('layouts/scripts') %>
+</body>
+</html>

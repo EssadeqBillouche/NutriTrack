@@ -1,7 +1,0 @@
-/node_modules
-.env
-/pages
-src/config/test-db.js
-src/config/test-query.js
-src/config/test-db.js
-src/public/uploads

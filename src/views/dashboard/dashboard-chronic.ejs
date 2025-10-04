@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('layouts/head') %>
+<body class="overflow-x-hidden bg-slate-900 text-white font-inter scroll-smooth">
+    <div class="flex min-h-screen">
+        <%- include('layouts/side-bar', {currentPage: 'dashboard'}) %>
+        
+        <div class="flex-1 flex flex-col">
+            <%- include('layouts/header', {pageTitle: 'Dashboard Patients Chroniques'}) %>
+            
+            <main class="flex-1 p-6 overflow-y-auto">
+                <div class="bg-gradient-to-br from-red-800 to-red-700 rounded-2xl p-6 mb-6 shadow-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2">Bienvenue, <%= dashboardData.userName %>!</h2>
+                            <p class="text-red-200">Dashboard spécialisé pour la gestion de vos conditions chroniques</p>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <% dashboardData.chronicMetrics.conditions.forEach(function(condition) { %>
+                                <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-sm">
+                                    <i class="fas fa-heartbeat mr-1"></i>
+                                    <%= condition %>
+                                </span>
+                                <% }); %>
+                            </div>
+                        </div>
+                        <button class="bg-lime-500 text-slate-900 px-4 py-2 rounded-lg font-semibold hover:bg-lime-400 mt-4 md:mt-0 flex items-center space-x-2 transition-colors">
+                            <i class="fas fa-camera"></i>
+                            <span>Analyser Repas</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <!-- Blood Sugar Card-->
+                    <% if (dashboardData.healthConditions.diabetes) { %>
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Glycémie Moyenne</p>
+                                <p class="text-2xl font-bold mt-1">125 <span class="text-sm font-normal text-slate-400">mg/dL</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-tint text-green-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-green-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 75%"></div>
+                        </div>
+                        <p class="text-xs text-green-400 mt-1">✓ Dans la normale</p>
+                    </div>
+                    <% } %>
+                    
+                    <% if (dashboardData.healthConditions.hypertension) { %>
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Tension Artérielle</p>
+                                <p class="text-2xl font-bold mt-1">128/82 <span class="text-sm font-normal text-slate-400">mmHg</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-heartbeat text-orange-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-orange-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 65%"></div>
+                        </div>
+                        <p class="text-xs text-orange-400 mt-1">⚠ À surveiller</p>
+                    </div>
+                    <% } %>
+                    
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">Poids Actuel</p>
+                                <p class="text-2xl font-bold mt-1"><%= dashboardData.generalMetrics.currentWeight %> <span class="text-sm font-normal text-slate-400">kg</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-weight text-blue-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 80%"></div>
+                        </div>
+                        <p class="text-xs text-blue-400 mt-1">Objectif: <%= dashboardData.generalMetrics.targetWeight %>kg</p>
+                    </div>
+                    
+                    <div class="bg-slate-800 rounded-xl p-4 shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-sm">IMC</p>
+                                <p class="text-2xl font-bold mt-1"><%= dashboardData.bmi %> <span class="text-sm font-normal text-slate-400">kg/m²</span></p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-chart-line text-purple-500"></i>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mt-3">
+                            <div class="bg-purple-500 h-2 rounded-full transition-all duration-1000 ease-in-out nutrition-bar" style="width: 70%"></div>
+                        </div>
+                        <p class="text-xs text-purple-400 mt-1"><%= dashboardData.bmiCategory %></p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-stethoscope text-red-500 mr-2"></i>
+                            Conditions Médicales
+                        </h3>
+                        <div class="space-y-3">
+                            <% dashboardData.chronicMetrics.conditions.forEach(function(condition) { %>
+                            <div class="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-heartbeat text-red-400"></i>
+                                    <span class="font-semibold"><%= condition %></span>
+                                </div>
+                                <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs">Actif</span>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <div class="mt-4 p-3 bg-yellow-500/10 rounded-lg">
+                            <p class="text-yellow-300 text-sm">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Consultez régulièrement votre médecin pour un suivi optimal
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-clipboard-list text-blue-500 mr-2"></i>
+                            Recommandations Médicales
+                        </h3>
+                        <div class="space-y-3">
+                            <% dashboardData.chronicMetrics.recommendations.forEach(function(recommendation) { %>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <span class="text-slate-300"><%= recommendation %></span>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <div class="mt-4 p-3 bg-green-500/10 rounded-lg">
+                            <p class="text-green-300 text-sm">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                Suivez ces recommandations pour optimiser votre santé
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <% if (dashboardData.healthConditions.hypertension) { %>
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-salt text-orange-500 mr-2"></i>
+                            Consommation de Sodium
+                        </h3>
+                        <div class="text-center mb-4">
+                            <div class="text-3xl font-bold text-orange-400">1,850mg</div>
+                            <div class="text-sm text-slate-400">/ 2,300mg recommandés</div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+                            <div class="bg-orange-500 h-2 rounded-full" style="width: 80%"></div>
+                        </div>
+                        <p class="text-xs text-orange-400">✓ Limite respectée</p>
+                    </div>
+                    <% } %>
+
+                    <% if (dashboardData.healthConditions.diabetes) { %>
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-candy-cane text-pink-500 mr-2"></i>
+                            Index Glycémique
+                        </h3>
+                        <div class="text-center mb-4">
+                            <div class="text-3xl font-bold text-pink-400">65</div>
+                            <div class="text-sm text-slate-400">Moyenne journalière</div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+                            <div class="bg-pink-500 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                        <p class="text-xs text-pink-400">⚠ À surveiller</p>
+                    </div>
+                    <% } %>
+
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-balance-scale text-green-500 mr-2"></i>
+                            Équilibre Calorique
+                        </h3>
+                        <div class="text-center mb-4">
+                            <div class="text-3xl font-bold text-green-400">1,650</div>
+                            <div class="text-sm text-slate-400">kcal consommées</div>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <p class="text-xs text-green-400">✓ Objectif atteint</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Medication Schedule -->
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-pills text-purple-500 mr-2"></i>
+                            Médicaments
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-slate-700 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Métformine</p>
+                                    <p class="text-sm text-slate-400">500mg - 2x/jour</p>
+                                </div>
+                                <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs">Prise</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-700 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Lisinopril</p>
+                                    <p class="text-sm text-slate-400">10mg - 1x/jour</p>
+                                </div>
+                                <span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs">À prendre</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monitoring Schedule -->
+                    <div class="bg-slate-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-calendar-check text-cyan-500 mr-2"></i>
+                            Surveillance Médicale
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-slate-700 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Glycémie</p>
+                                    <p class="text-sm text-slate-400">3x/jour - Avant repas</p>
+                                </div>
+                                <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs">À jour</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-700 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Tension Artérielle</p>
+                                    <p class="text-sm text-slate-400">2x/jour - Matin/Soir</p>
+                                </div>
+                                <span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs">En attente</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-slate-700 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Poids</p>
+                                    <p class="text-sm text-slate-400">1x/semaine - Même jour</p>
+                                </div>
+                                <span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs">Programmé</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <%- include('layouts/scripts') %>
+</body>
+</html>
+

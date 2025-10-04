@@ -1,1 +1,7 @@
-node_modules
+/node_modules
+/.idea
+/.idea/NtruTrack.iml
+/.idea/vcs.xml
+/sessions/DH37gpja4ArqAJnXlh_MR8RRFdICyb_c.json
+/.env
+/.idea/modules.xml

@@ -9,6 +9,7 @@ import aiRouter from './routes/ai.routes.js'
 import expressLayouts from 'express-ejs-layouts';
 import sessionConfig from './config/session.js';
 import dotenv from "dotenv"
+import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 
 import { fileURLToPath } from 'url';
 
@@ -32,6 +33,8 @@ app.get('/', (req, res) => {
     res.render("home/home", { title : 'Home', scripts :[], layout : false});
 });
 
+
+
 app.use('/auth', authRouter);
 app.use('/dashboard', dashboardRoutes);
 app.use('/meal', mealAnalysisRoutes);
@@ -39,4 +42,12 @@ app.use('/profile', profileRouter);
 app.use('/reports', reportsRouter);
 app.use('/ai', aiRouter);
 
+
+app.use((req, res, next) => {
+    res.status(404).render('404', {
+        title: 'Page Not Found - NutriScan.AI',
+        scripts : false,
+        layout : false
+    });
+});
 export default app;

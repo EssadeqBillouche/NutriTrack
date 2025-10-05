@@ -7,8 +7,8 @@ router.post('/register', authController.postRegister);
 router.get('/register', authController.getRegister);
 router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
-router.post('addProfile');
-router.get('getProfile')
-router.post('/logout', authController.logout);
+router.post('addProfile', authController.setProfile);
+// router.get('getProfile')
+router.get('/logout', authController.logout);
 
 export default router;

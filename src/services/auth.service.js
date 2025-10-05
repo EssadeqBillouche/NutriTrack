@@ -20,3 +20,7 @@ export const login = async ({ email, password }) => {
   }
   return user;
 };
+//
+// export const setProfile = async ({userId, profileType, height, currentWeight, targetWeight, activity_level, hasDiabetes, hasHypertension, hasObesity, disipline, trainingFrequency}){
+//
+// }

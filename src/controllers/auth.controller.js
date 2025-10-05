@@ -1,5 +1,6 @@
 import * as authService from '../services/auth.service.js';
 import sessionConfig from '../config/session.js';
+import session from "express-session";
 
 
 
@@ -29,7 +30,8 @@ export const postLogin = async (req, res) => {
     const user = await authService.login({ email, password });
     
     req.session.user = {id: user.id, first_name : user.first_name, last_name : user.last_name }
-    res.status(200).json({ message: 'Login successful'}); 
+      console.log(req.session.user);
+    res.redirect(`/dashboard/`);
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
@@ -40,10 +42,13 @@ export const logout = (req, res) => {
     if (err) {
       return res.status(500).json({ error: 'Failed to log out' });
     }
-    res.status(200).json({ message: 'Logout successful' });
+    res.redirect('/Auth/login');
   });
 };
 
-export const setProfile = {req, res}{
-  
+export const setProfile = (req, res) => {
+    const {profileType, height, currentWeight, targetWeight, activity_level, hasDiabetes, hasHypertension, hasObesity, disipline, trainingFrequency} = req.body;
+    const userId = session.user.id;
+
+
 }

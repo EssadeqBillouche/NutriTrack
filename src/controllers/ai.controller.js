@@ -1,6 +1,8 @@
+import bcrypt from "bcryptjs";
 
-
-const sendRequestAi = async (req, res) =>
-{
-
+export const showUpload = (req, res) =>{
+    res.render('ai/upload', {layout : false, })
 }
+
+
+const hashPassword = await bcrypt.hash

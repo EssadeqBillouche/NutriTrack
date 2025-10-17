@@ -1,5 +1,5 @@
 import * as dashboardControllers from '../controllers/dashboard.controller.js';
-import * as profileControllers from '../config/controllers/profile.controller.js';
+import * as profileControllers from '../controllers/profile.controller.js';
 import { Router } from 'express';
 
 const router = Router();

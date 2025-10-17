@@ -1,5 +1,9 @@
-import { lazy } from 'react';
-import * as profileService from '../../services/profile.service.js';
+import * as dashboardControllers from '../controllers/dashboard.controller.js';
+import * as profileControllers from '../controllers/profile.controller.js';
+import { Router } from 'express';
+
+const router = Router();
+import * as profileService from '../services/profile.service.js';
 
 export const getProfile = async (req, res, next) => {
   try {

@@ -23,9 +23,9 @@ export const getWeeklyNutrition = async (userId) => {
 export const getTodayMeals = async (userId) => {
   const today = new Date().toISOString().split('T')[0];
   const query = `
-    SELECT * FROM public.meal_logs 
-    WHERE user_id = $1 AND log_date = $2
-    ORDER BY logged_at ASC
+    SELECT * FROM public.meals 
+    WHERE user_id = $1 AND meal_date = $2
+    ORDER BY meal_time ASC
   `;
   const result = await pool.query(query, [userId, today]);
   return result.rows;
@@ -33,9 +33,9 @@ export const getTodayMeals = async (userId) => {
 
 export const getRecentMeals = async (userId, limit = 5) => {
   const query = `
-    SELECT * FROM public.meal_logs 
+    SELECT * FROM public.meals 
     WHERE user_id = $1 
-    ORDER BY logged_at DESC 
+    ORDER BY meal_date DESC, meal_time DESC 
     LIMIT $2
   `;
   const result = await pool.query(query, [userId, limit]);

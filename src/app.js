@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {urlencoded} from 'express';
 import path from 'path';
 import authRouter from './routes/auth.routes.js'
 import dashboardRoutes from './routes/dashboard.routes.js'
@@ -12,6 +12,8 @@ import dotenv from "dotenv"
 import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 
 import { fileURLToPath } from 'url';
+import session from "./config/session.js";
+import {checkIfUserLoggedIn} from "./middlewares/auth.middleware.js";
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(express.json());
+app.use(urlencoded({ extended: false }));
 app.use(sessionConfig);
 app.use(express.static(path.join(__dirname, 'public')))
 app.set("view engine", "ejs");
@@ -29,18 +32,19 @@ app.use(expressLayouts);
 app.set('layout', 'auth/main');
 app.set("views", path.join(__dirname, "views"));
 
+
 app.get('/', (req, res) => {
     res.render("home/home", { title : 'Home', scripts :[], layout : false});
 });
 
 
-
 app.use('/auth', authRouter);
-app.use('/dashboard', dashboardRoutes);
-app.use('/meal', mealAnalysisRoutes);
-app.use('/profile', profileRouter);
-app.use('/reports', reportsRouter);
-app.use('/ai', aiRouter);
+app.use('/dashboard', dashboardRoutes, checkIfUserLoggedIn);
+app.use('/meal', mealAnalysisRoutes, checkIfUserLoggedIn);
+app.use('/profile', profileRouter, checkIfUserLoggedIn);
+app.use('/reports', reportsRouter, checkIfUserLoggedIn);
+app.use('/ai', aiRouter, checkIfUserLoggedIn);
+
 
 
 app.use((req, res, next) => {

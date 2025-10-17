@@ -1,6 +1,0 @@
-
-
-const sendImageForUpload = (req. res)
-{
-
-}

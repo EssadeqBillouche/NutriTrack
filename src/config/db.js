@@ -20,3 +20,6 @@ console.log(process.env.DB_PASSWORD)
 console.log(process.env.DB_PORT)
 
 export default pool ;
+
+
+

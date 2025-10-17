@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - NutriScan.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #a3e635;
+            --primary-dark: #84cc16;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+
+        .dashboard-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .active-nav-item {
+            background-color: rgba(163, 230, 53, 0.1);
+            border-left: 4px solid #a3e635;
+            color: #a3e635;
+        }
+
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active {
+            background-color: #a3e635;
+            color: #0f172a;
+        }
+
+        .step-indicator.inactive {
+            background-color: #334155;
+            color: #94a3b8;
+        }
+
+        .step-indicator.completed {
+            background-color: #16a34a;
+            color: white;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .health-condition {
+            transition: all 0.3s ease;
+        }
+
+        .health-condition.selected {
+            background-color: rgba(163, 230, 53, 0.2);
+            border-color: #a3e635;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden bg-slate-900 text-white font-inter scroll-smooth">
+<div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-slate-800 p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-lime-400 via-green-500 to-emerald-600 flex items-center justify-center relative">
+                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                        <div class="w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500"></div>
+                    </div>
+                </div>
+                <span class="text-xl font-bold">NutriScan.AI</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center">
+                <span class="text-white text-sm font-bold">AJ</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="w-full max-w-4xl">
+            <!-- Welcome Section -->
+            <div class="dashboard-gradient rounded-2xl p-8 mb-8 card-shadow text-center">
+                <h1 class="text-3xl font-bold mb-4">Complete Your Profile</h1>
+                <p class="text-slate-300 max-w-2xl mx-auto">
+                    To provide you with personalized nutrition recommendations and meal analysis,
+                    we need to know a bit more about you and your health goals.
+                </p>
+            </div>
+
+            <!-- Progress Steps -->
+            <div class="flex justify-between mb-8 relative">
+                <div class="absolute top-1/2 left-0 right-0 h-1 bg-slate-700 -z-10"></div>
+                <div class="absolute top-1/2 left-0 h-1 bg-lime-500 -z-10" id="progress-bar"></div>
+
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator active" id="step-1">1</div>
+                    <span class="text-sm mt-2 text-lime-500 font-medium">Profile Type</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator inactive" id="step-2">2</div>
+                    <span class="text-sm mt-2 text-slate-400">Measurements</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator inactive" id="step-3">3</div>
+                    <span class="text-sm mt-2 text-slate-400">Activity Level</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="step-indicator inactive" id="step-4">4</div>
+                    <span class="text-sm mt-2 text-slate-400">Health Info</span>
+                </div>
+            </div>
+
+            <!-- Form Container -->
+            <div class="bg-slate-800 rounded-xl p-8 card-shadow">
+                <form id="profile-setup-form" action="/auth/addProfile" method="POST">
+                    <!-- Step 1: Profile Type -->
+                    <div class="form-step active" id="step-1-content">
+                        <h2 class="text-2xl font-bold mb-6">Select Your Profile Type</h2>
+
+                        <!-- Hidden input for profile type -->
+                        <input type="hidden" name="profileType" id="profileTypeInput" value="">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div class="health-condition p-6 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="general">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg">General Wellness</h3>
+                                        <p class="text-slate-400 text-sm">For everyday health and nutrition tracking</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-6 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="athlete">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-dumbbell text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg">Athlete</h3>
+                                        <p class="text-slate-400 text-sm">For performance optimization and training nutrition</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="button" class="bg-lime-500 text-slate-900 px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors next-step" data-next="2">
+                                Continue <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Measurements -->
+                    <div class="form-step" id="step-2-content">
+                        <h2 class="text-2xl font-bold mb-6">Your Body Measurements</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Height (cm)</label>
+                                <input type="number" name="height" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-lime-500" placeholder="e.g. 175" min="100" max="250" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Current Weight (kg)</label>
+                                <input type="number" name="currentWeight" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-lime-500" placeholder="e.g. 70" min="30" max="200" step="0.1" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Target Weight (kg)</label>
+                                <input type="number" name="targetWeight" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-lime-500" placeholder="e.g. 68" min="30" max="200" step="0.1" required>
+                            </div>
+                            <div class="flex items-end">
+                                <div class="w-full">
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Weight Goal</label>
+                                    <div class="text-slate-400 text-sm" id="weight-goal-display">Maintain weight</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button type="button" class="bg-slate-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-slate-600 transition-colors prev-step" data-prev="1">
+                                <i class="fas fa-arrow-left mr-2"></i> Back
+                            </button>
+                            <button type="button" class="bg-lime-500 text-slate-900 px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors next-step" data-next="3">
+                                Continue <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Activity Level -->
+                    <div class="form-step" id="step-3-content">
+                        <h2 class="text-2xl font-bold mb-6">Your Activity Level</h2>
+
+                        <!-- Hidden input for activity level -->
+                        <input type="hidden" name="activity_level" id="activityLevelInput" value="">
+
+                        <div class="space-y-4 mb-8">
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="sedentary">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-slate-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-couch"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Sedentary</h3>
+                                        <p class="text-slate-400 text-sm">Little to no exercise, desk job</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="light">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-walking text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Lightly Active</h3>
+                                        <p class="text-slate-400 text-sm">Light exercise 1-3 days/week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="moderate">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-running text-yellow-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Moderately Active</h3>
+                                        <p class="text-slate-400 text-sm">Moderate exercise 3-5 days/week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="very">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-dumbbell text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Very Active</h3>
+                                        <p class="text-slate-400 text-sm">Hard exercise 6-7 days/week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-value="extreme">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-medal text-purple-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Extremely Active</h3>
+                                        <p class="text-slate-400 text-sm">Very hard exercise, physical job, or training 2x/day</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Athlete-specific fields (shown only if athlete profile selected) -->
+                        <div id="athlete-fields" class="hidden space-y-4 mb-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Sport/Discipline</label>
+                                    <input type="text" name="discipline" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-lime-500" placeholder="e.g. Running, Weightlifting">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Training Frequency</label>
+                                    <select name="trainingFrequency" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-lime-500">
+                                        <option value="">Select frequency</option>
+                                        <option value="1-2 times/week">1-2 times/week</option>
+                                        <option value="3-4 times/week">3-4 times/week</option>
+                                        <option value="5-6 times/week">5-6 times/week</option>
+                                        <option value="Daily">Daily</option>
+                                        <option value="2+ times/day">2+ times/day</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button type="button" class="bg-slate-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-slate-600 transition-colors prev-step" data-prev="2">
+                                <i class="fas fa-arrow-left mr-2"></i> Back
+                            </button>
+                            <button type="button" class="bg-lime-500 text-slate-900 px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors next-step" data-next="4">
+                                Continue <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Health Information -->
+                    <div class="form-step" id="step-4-content">
+                        <h2 class="text-2xl font-bold mb-6">Health Information</h2>
+                        <p class="text-slate-400 mb-6">Please indicate if you have any of the following conditions (select all that apply):</p>
+
+                        <!-- Hidden inputs for health conditions -->
+                        <input type="hidden" name="hasDiabetes" id="hasDiabetesInput" value="off">
+                        <input type="hidden" name="hasObesity" id="hasObesityInput" value="off">
+                        <input type="hidden" name="hasHypertension" id="hasHypertensionInput" value="off">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-condition="diabetes">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-syringe text-red-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Diabetes</h3>
+                                        <p class="text-slate-400 text-sm">Type 1 or Type 2 diabetes</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-condition="obesity">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-weight text-orange-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Obesity</h3>
+                                        <p class="text-slate-400 text-sm">BMI over 30 or weight-related health issues</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-condition="hypertension">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-heartbeat text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">Hypertension</h3>
+                                        <p class="text-slate-400 text-sm">High blood pressure</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="health-condition p-4 border-2 border-slate-600 rounded-xl cursor-pointer hover:border-lime-500 transition-colors" data-condition="none">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-heart text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold">None of the above</h3>
+                                        <p class="text-slate-400 text-sm">I don't have any of these conditions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-700/50 rounded-lg p-4 mb-8">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-info-circle text-lime-500 mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-lime-500 mb-1">Privacy & Data Security</h4>
+                                    <p class="text-slate-400 text-sm">Your health information is encrypted and stored securely. We use this data only to provide personalized nutrition recommendations and never share it with third parties.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button type="button" class="bg-slate-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-slate-600 transition-colors prev-step" data-prev="3">
+                                <i class="fas fa-arrow-left mr-2"></i> Back
+                            </button>
+                            <button type="submit" class="bg-lime-500 text-slate-900 px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition-colors flex items-center">
+                                Complete Profile <i class="fas fa-check ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Form navigation and step management
+    document.addEventListener('DOMContentLoaded', function() {
+        const steps = document.querySelectorAll('.form-step');
+        const stepIndicators = document.querySelectorAll('.step-indicator');
+        const progressBar = document.getElementById('progress-bar');
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        const healthConditions = document.querySelectorAll('.health-condition');
+        const athleteFields = document.getElementById('athlete-fields');
+        const currentWeightInput = document.querySelector('input[name="currentWeight"]');
+        const targetWeightInput = document.querySelector('input[name="targetWeight"]');
+        const weightGoalDisplay = document.getElementById('weight-goal-display');
+
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Update step indicators
+            stepIndicators.forEach((indicator, index) => {
+                const stepNumber = index + 1;
+                indicator.classList.remove('active', 'completed', 'inactive');
+
+                if (stepNumber < currentStep) {
+                    indicator.classList.add('completed');
+                } else if (stepNumber === currentStep) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.add('inactive');
+                }
+            });
+        }
+
+        // Show step
+        function showStep(stepNumber) {
+            steps.forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById(`step-${stepNumber}-content`).classList.add('active');
+            currentStep = stepNumber;
+            updateProgress();
+        }
+
+        // Next button event listeners
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const nextStep = parseInt(this.getAttribute('data-next'));
+                if (validateStep(currentStep)) {
+                    showStep(nextStep);
+                }
+            });
+        });
+
+        // Previous button event listeners
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const prevStep = parseInt(this.getAttribute('data-prev'));
+                showStep(prevStep);
+            });
+        });
+
+        // Profile type selection (Step 1)
+        const profileTypeOptions = document.querySelectorAll('#step-1-content .health-condition[data-value]');
+        profileTypeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                profileTypeOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+
+                // Set the hidden input value
+                const profileType = this.getAttribute('data-value');
+                document.getElementById('profileTypeInput').value = profileType;
+
+                // Show/hide athlete fields based on selection
+                if (profileType === 'athlete') {
+                    athleteFields.classList.remove('hidden');
+                } else {
+                    athleteFields.classList.add('hidden');
+                }
+            });
+        });
+
+        // Activity level selection (Step 3)
+        const activityOptions = document.querySelectorAll('#step-3-content .health-condition[data-value]');
+        activityOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                activityOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+
+                // Set the hidden input value
+                const activityLevel = this.getAttribute('data-value');
+                document.getElementById('activityLevelInput').value = activityLevel;
+            });
+        });
+
+        // Health condition selection (Step 4)
+        const healthConditionOptions = document.querySelectorAll('#step-4-content .health-condition[data-condition]');
+        healthConditionOptions.forEach(condition => {
+            condition.addEventListener('click', function() {
+                const conditionType = this.getAttribute('data-condition');
+
+                if (conditionType === 'none') {
+                    // Deselect all other conditions
+                    healthConditionOptions.forEach(c => {
+                        if (c !== this && c.getAttribute('data-condition') !== 'none') {
+                            c.classList.remove('selected');
+                            const cond = c.getAttribute('data-condition');
+                            const conditionName = 'has' + cond.charAt(0).toUpperCase() + cond.slice(1);
+                            document.getElementById(conditionName + 'Input').value = 'off';
+                        }
+                    });
+                } else {
+                    // Deselect "none" if another condition is selected
+                    const noneOption = document.querySelector('#step-4-content .health-condition[data-condition="none"]');
+                    if (noneOption) {
+                        noneOption.classList.remove('selected');
+                    }
+                }
+
+                this.classList.toggle('selected');
+
+                // Update hidden input value
+                if (conditionType !== 'none') {
+                    const conditionName = 'has' + conditionType.charAt(0).toUpperCase() + conditionType.slice(1);
+                    const input = document.getElementById(conditionName + 'Input');
+                    input.value = this.classList.contains('selected') ? 'on' : 'off';
+                }
+            });
+        });
+
+        // Weight goal calculation
+        function updateWeightGoal() {
+            const currentWeight = parseFloat(currentWeightInput.value) || 0;
+            const targetWeight = parseFloat(targetWeightInput.value) || 0;
+
+            if (currentWeight && targetWeight) {
+                const difference = targetWeight - currentWeight;
+
+                if (difference > 2) {
+                    weightGoalDisplay.textContent = `Gain ${difference.toFixed(1)} kg`;
+                    weightGoalDisplay.className = 'text-slate-400 text-sm';
+                } else if (difference < -2) {
+                    weightGoalDisplay.textContent = `Lose ${Math.abs(difference).toFixed(1)} kg`;
+                    weightGoalDisplay.className = 'text-green-400 text-sm';
+                } else {
+                    weightGoalDisplay.textContent = 'Maintain weight';
+                    weightGoalDisplay.className = 'text-blue-400 text-sm';
+                }
+            } else {
+                weightGoalDisplay.textContent = 'Maintain weight';
+                weightGoalDisplay.className = 'text-slate-400 text-sm';
+            }
+        }
+
+        currentWeightInput.addEventListener('input', updateWeightGoal);
+        targetWeightInput.addEventListener('input', updateWeightGoal);
+
+        // Form validation
+        function validateStep(step) {
+            let isValid = true;
+
+            switch(step) {
+                case 1:
+                    const selectedProfile = document.getElementById('profileTypeInput').value;
+                    if (!selectedProfile) {
+                        alert('Please select a profile type');
+                        isValid = false;
+                    }
+                    break;
+                case 2:
+                    const height = document.querySelector('input[name="height"]').value;
+                    const currentWeight = document.querySelector('input[name="currentWeight"]').value;
+                    const targetWeight = document.querySelector('input[name="targetWeight"]').value;
+
+                    if (!height || !currentWeight || !targetWeight) {
+                        alert('Please fill in all measurement fields');
+                        isValid = false;
+                    } else if (parseFloat(height) < 100 || parseFloat(height) > 250) {
+                        alert('Please enter a valid height between 100cm and 250cm');
+                        isValid = false;
+                    } else if (parseFloat(currentWeight) < 30 || parseFloat(currentWeight) > 200) {
+                        alert('Please enter a valid current weight between 30kg and 200kg');
+                        isValid = false;
+                    } else if (parseFloat(targetWeight) < 30 || parseFloat(targetWeight) > 200) {
+                        alert('Please enter a valid target weight between 30kg and 200kg');
+                        isValid = false;
+                    }
+                    break;
+                case 3:
+                    const selectedActivity = document.getElementById('activityLevelInput').value;
+                    if (!selectedActivity) {
+                        alert('Please select your activity level');
+                        isValid = false;
+                    }
+
+                    // Validate athlete fields if athlete profile is selected
+                    const profileType = document.getElementById('profileTypeInput').value;
+                    if (profileType === 'athlete') {
+                        const discipline = document.querySelector('input[name="discipline"]').value;
+                        const frequency = document.querySelector('select[name="trainingFrequency"]').value;
+
+                        if (!discipline || !frequency) {
+                            alert('Please fill in all athlete-specific fields');
+                            isValid = false;
+                        }
+                    }
+                    break;
+            }
+
+            return isValid;
+        }
+
+        // Form submission
+        document.getElementById('profile-setup-form').addEventListener('submit', function(e) {
+            if (!validateStep(4)) {
+                e.preventDefault();
+                return;
+            }
+
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+            submitButton.disabled = true;
+        });
+
+        // Initialize progress
+        updateProgress();
+    });
+</script>
+</body>
+</html>

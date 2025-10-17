@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - NutriScan.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #a3e635;
+            --primary-dark: #84cc16;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: white;
+        }
+
+        .dashboard-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .active-nav-item {
+            background-color: rgba(163, 230, 53, 0.1);
+            border-left: 4px solid #a3e635;
+            color: #a3e635;
+        }
+
+        .nutrient-bar {
+            transition: all 0.3s ease;
+        }
+
+        .nutrient-bar:hover {
+            transform: translateY(-1px);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+    <!-- Dashboard Layout -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-slate-900 p-6 hidden md:block">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 mb-10">
+                <div
+                    class="w-10 h-10 rounded-full bg-gradient-to-br from-lime-400 via-green-500 to-emerald-600 flex items-center justify-center relative">
+                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                        <div class="w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-red-500"></div>
+                    </div>
+                </div>
+                <span class="text-2xl font-bold text-white">NutriScan.AI</span>
+            </div>
+
+            <!-- User Profile -->
+            <div class="flex items-center space-x-3 mb-8 p-3 rounded-lg bg-slate-800">
+                <div
+                    class="w-12 h-12 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold">AJ</span>
+                </div>
+                <div>
+                    <p class="font-medium">Abdelilah</p>
+                    <p class="text-sm text-slate-400">Weight Management</p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a href="/dashboard"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-home w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/meal-plans"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-utensils w-5 text-center"></i>
+                    <span>Meal Plans</span>
+                </a>
+                <a href="/ai-analysis" class="flex items-center space-x-3 p-3 rounded-lg active-nav-item">
+                    <i class="fas fa-camera w-5 text-center"></i>
+                    <span>Scan Meal</span>
+                </a>
+                <a href="/progress"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span>Progress</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Header -->
+            <header class="bg-slate-800 p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="mobile-menu-button" class="md:hidden text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-xl font-bold">Analysis Results</h1>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="analyzeNewMeal()" class="bg-lime-500 text-slate-900 py-2 px-4 rounded-lg font-medium hover:bg-lime-400 transition-colors">
+                        <i class="fas fa-camera mr-2"></i>Analyze New Meal
+                    </button>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-slate-300 hover:text-white">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-bold">AJ</span>
+                            </div>
+                            <span>Abdelilah</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <!-- Loading State -->
+                <div id="loading-section" class="fade-in">
+                    <div class="dashboard-gradient rounded-2xl p-8 mb-6 card-shadow text-center">
+                        <div class="flex flex-col items-center justify-center space-y-4 py-12">
+                            <div class="w-16 h-16 border-4 border-lime-500 border-t-transparent rounded-full animate-spin"></div>
+                            <h2 class="text-2xl font-bold">Analyzing Your Meal...</h2>
+                            <p class="text-slate-300">Our AI is identifying food items and calculating nutritional values</p>
+                            <div class="w-64 bg-slate-700 rounded-full h-2 mt-4">
+                                <div class="bg-lime-500 h-2 rounded-full animate-pulse" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results-section" class="hidden slide-up">
+                    <!-- Header with Meal Info -->
+                    <div class="dashboard-gradient rounded-2xl p-6 mb-6 card-shadow">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <h2 class="text-2xl font-bold mb-2">Meal Analysis Complete</h2>
+                                <p class="text-slate-300">Analyzed on <span id="analysis-date"></span></p>
+                            </div>
+                            <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-lime-400" id="total-calories">0</div>
+                                    <div class="text-sm text-slate-400">Calories</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-400" id="total-protein">0g</div>
+                                    <div class="text-sm text-slate-400">Protein</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-yellow-400" id="total-carbs">0g</div>
+                                    <div class="text-sm text-slate-400">Carbs</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-orange-400" id="total-fat">0g</div>
+                                    <div class="text-sm text-slate-400">Fat</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                        <!-- Meal Image & Identified Foods -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Meal Image -->
+                            <div class="bg-slate-800 rounded-xl p-6 card-shadow">
+                                <h3 class="text-lg font-bold mb-4">Your Meal</h3>
+                                <div class="relative rounded-lg overflow-hidden">
+                                    <img id="analyzed-meal-image" src="" alt="Analyzed meal" class="w-full h-64 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                </div>
+                            </div>
+
+                            <!-- Identified Food Items -->
+                            <div class="bg-slate-800 rounded-xl p-6 card-shadow">
+                                <h3 class="text-lg font-bold mb-4">Identified Food Items</h3>
+                                <div id="food-items-list" class="space-y-3">
+                                    <!-- Food items will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nutrition Summary -->
+                        <div class="space-y-6">
+                            <!-- Nutrition Chart -->
+                            <div class="bg-slate-800 rounded-xl p-6 card-shadow">
+                                <h3 class="text-lg font-bold mb-4">Nutrition Distribution</h3>
+                                <div class="h-64">
+                                    <canvas id="nutrition-chart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Health Insights -->
+                            <div class="bg-slate-800 rounded-xl p-6 card-shadow">
+                                <h3 class="text-lg font-bold mb-4">Health Insights</h3>
+                                <div id="health-insights" class="space-y-3">
+                                    <!-- Insights will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Nutrition Breakdown -->
+                    <div class="bg-slate-800 rounded-xl p-6 card-shadow mb-6">
+                        <h3 class="text-lg font-bold mb-4">Detailed Nutrition Breakdown</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- Macronutrients -->
+                            <div class="space-y-3">
+                                <h4 class="font-semibold text-slate-400">Macronutrients</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Protein</span>
+                                        <span class="font-medium" id="protein-amount">0g</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" id="protein-bar" style="width: 0%"></div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Carbohydrates</span>
+                                        <span class="font-medium" id="carbs-amount">0g</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" id="carbs-bar" style="width: 0%"></div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Fat</span>
+                                        <span class="font-medium" id="fat-amount">0g</span>
+                                    </div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div class="bg-orange-500 h-2 rounded-full" id="fat-bar" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Micronutrients -->
+                            <div class="space-y-3">
+                                <h4 class="font-semibold text-slate-400">Vitamins</h4>
+                                <div id="vitamins-list" class="space-y-2">
+                                    <!-- Vitamins will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Minerals -->
+                            <div class="space-y-3">
+                                <h4 class="font-semibold text-slate-400">Minerals</h4>
+                                <div id="minerals-list" class="space-y-2">
+                                    <!-- Minerals will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Other Nutrients -->
+                            <div class="space-y-3">
+                                <h4 class="font-semibold text-slate-400">Other</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Fiber</span>
+                                        <span class="font-medium" id="fiber-amount">0g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Sugar</span>
+                                        <span class="font-medium" id="sugar-amount">0g</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm">Sodium</span>
+                                        <span class="font-medium" id="sodium-amount">0mg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="analyzeNewMeal()" class="bg-lime-500 text-slate-900 py-3 px-8 rounded-lg font-bold hover:bg-lime-400 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-camera"></i>
+                            <span>Analyze Another Meal</span>
+                        </button>
+                        <button onclick="saveToLog()" class="bg-slate-700 text-white py-3 px-8 rounded-lg font-bold hover:bg-slate-600 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-save"></i>
+                            <span>Save to Food Log</span>
+                        </button>
+                        <button onclick="shareResults()" class="bg-slate-700 text-white py-3 px-8 rounded-lg font-bold hover:bg-slate-600 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-share"></i>
+                            <span>Share Results</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Section -->
+                <div id="error-section" class="hidden fade-in">
+                    <div class="dashboard-gradient rounded-2xl p-8 mb-6 card-shadow text-center">
+                        <div class="flex flex-col items-center justify-center space-y-4 py-12">
+                            <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                            <h2 class="text-2xl font-bold">Analysis Failed</h2>
+                            <p class="text-slate-300" id="error-message">We couldn't analyze your meal. Please try again.</p>
+                            <button onclick="analyzeNewMeal()" class="bg-lime-500 text-slate-900 py-3 px-6 rounded-lg font-bold hover:bg-lime-400 transition-colors mt-4">
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-slate-900 z-50 hidden md:hidden">
+        <!-- Same mobile menu as previous page -->
+    </div>
+
+    <script>
+        // Sample analysis data - In real app, this would come from your backend
+        const sampleAnalysisData = {
+            mealImage: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80',
+            identifiedFoods: [
+                { name: 'Grilled Chicken Breast', confidence: 92, calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+                { name: 'Steamed Broccoli', confidence: 88, calories: 55, protein: 3.7, carbs: 11.2, fat: 0.6 },
+                { name: 'Brown Rice', confidence: 85, calories: 216, protein: 5, carbs: 45, fat: 1.8 },
+                { name: 'Avocado', confidence: 78, calories: 160, protein: 2, carbs: 8.5, fat: 14.7 }
+            ],
+            totalNutrition: {
+                calories: 596,
+                protein: 41.7,
+                carbohydrates: 64.7,
+                fat: 20.7,
+                fiber: 12.3,
+                sugar: 3.2,
+                sodium: 420,
+                vitamins: {
+                    'Vitamin A': '45%',
+                    'Vitamin C': '120%',
+                    'Vitamin D': '15%',
+                    'Vitamin E': '25%'
+                },
+                minerals: {
+                    'Calcium': '8%',
+                    'Iron': '20%',
+                    'Potassium': '35%',
+                    'Magnesium': '28%'
+                }
+            },
+            healthInsights: [
+                'High protein content supports muscle maintenance',
+                'Excellent source of Vitamin C from broccoli',
+                'Good balance of healthy fats from avocado',
+                'High fiber content aids digestion'
+            ],
+            analysisDate: new Date().toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            })
+        };
+
+        // Simulate analysis process
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading for 3 seconds, then show results
+            setTimeout(() => {
+                showAnalysisResults(sampleAnalysisData);
+            }, 3000);
+        });
+
+        function showAnalysisResults(data) {
+            document.getElementById('loading-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+
+            // Set basic info
+            document.getElementById('analysis-date').textContent = data.analysisDate;
+            document.getElementById('analyzed-meal-image').src = data.mealImage;
+
+            // Set total nutrition values
+            document.getElementById('total-calories').textContent = data.totalNutrition.calories;
+            document.getElementById('total-protein').textContent = data.totalNutrition.protein + 'g';
+            document.getElementById('total-carbs').textContent = data.totalNutrition.carbohydrates + 'g';
+            document.getElementById('total-fat').textContent = data.totalNutrition.fat + 'g';
+
+            // Populate food items
+            const foodItemsList = document.getElementById('food-items-list');
+            foodItemsList.innerHTML = data.identifiedFoods.map(food => `
+                <div class="flex items-center justify-between p-3 bg-slate-700 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-3 h-3 rounded-full bg-lime-400"></div>
+                        <span class="font-medium">${food.name}</span>
+                    </div>
+                    <div class="flex items-center space-x-4 text-sm text-slate-400">
+                        <span>${food.confidence}% confidence</span>
+                        <span>${food.calories} cal</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Populate health insights
+            const healthInsights = document.getElementById('health-insights');
+            healthInsights.innerHTML = data.healthInsights.map(insight => `
+                <div class="flex items-start space-x-3 p-3 bg-slate-700 rounded-lg">
+                    <i class="fas fa-lightbulb text-lime-400 mt-1"></i>
+                    <span>${insight}</span>
+                </div>
+            `).join('');
+
+            // Set detailed nutrition values
+            document.getElementById('protein-amount').textContent = data.totalNutrition.protein + 'g';
+            document.getElementById('carbs-amount').textContent = data.totalNutrition.carbohydrates + 'g';
+            document.getElementById('fat-amount').textContent = data.totalNutrition.fat + 'g';
+            document.getElementById('fiber-amount').textContent = data.totalNutrition.fiber + 'g';
+            document.getElementById('sugar-amount').textContent = data.totalNutrition.sugar + 'g';
+            document.getElementById('sodium-amount').textContent = data.totalNutrition.sodium + 'mg';
+
+            // Animate nutrition bars
+            setTimeout(() => {
+                const totalMacros = data.totalNutrition.protein + data.totalNutrition.carbohydrates + data.totalNutrition.fat;
+                document.getElementById('protein-bar').style.width = `${(data.totalNutrition.protein / totalMacros) * 100}%`;
+                document.getElementById('carbs-bar').style.width = `${(data.totalNutrition.carbohydrates / totalMacros) * 100}%`;
+                document.getElementById('fat-bar').style.width = `${(data.totalNutrition.fat / totalMacros) * 100}%`;
+            }, 500);
+
+            // Populate vitamins and minerals
+            const vitaminsList = document.getElementById('vitamins-list');
+            vitaminsList.innerHTML = Object.entries(data.totalNutrition.vitamins).map(([vitamin, value]) => `
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">${vitamin}</span>
+                    <span class="font-medium">${value}</span>
+                </div>
+            `).join('');
+
+            const mineralsList = document.getElementById('minerals-list');
+            mineralsList.innerHTML = Object.entries(data.totalNutrition.minerals).map(([mineral, value]) => `
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">${mineral}</span>
+                    <span class="font-medium">${value}</span>
+                </div>
+            `).join('');
+
+            // Initialize nutrition chart
+            initializeNutritionChart(data.totalNutrition);
+        }
+
+        function initializeNutritionChart(nutrition) {
+            const ctx = document.getElementById('nutrition-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Protein', 'Carbs', 'Fat'],
+                    datasets: [{
+                        data: [nutrition.protein, nutrition.carbohydrates, nutrition.fat],
+                        backgroundColor: [
+                            '#60a5fa', // blue-400
+                            '#fbbf24', // yellow-400
+                            '#fb923c'  // orange-400
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#cbd5e1',
+                                font: {
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value}g (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        function analyzeNewMeal() {
+            window.location.href = '/ai-analysis';
+        }
+
+        function saveToLog() {
+            // Simulate saving to log
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i><span>Saved!</span>';
+            button.classList.remove('bg-slate-700');
+            button.classList.add('bg-green-500');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('bg-green-500');
+                button.classList.add('bg-slate-700');
+            }, 2000);
+        }
+
+        function shareResults() {
+            // Simulate sharing
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Meal Analysis - NutriScan.AI',
+                    text: `I analyzed my meal with NutriScan.AI! ${sampleAnalysisData.totalNutrition.calories} calories, ${sampleAnalysisData.totalNutrition.protein}g protein.`,
+                    url: window.location.href
+                });
+            } else {
+                alert('Results copied to clipboard!');
+            }
+        }
+
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-button')?.addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.remove('hidden');
+        });
+
+        document.getElementById('close-mobile-menu')?.addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+    </script>
+</body>
+
+</html>

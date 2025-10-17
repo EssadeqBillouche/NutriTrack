@@ -1,8 +1,10 @@
 import * as dashboardServices from '../services/dashboard.service.js';
 import * as profileService from '../services/profile.service.js';
+import session from "express-session";
 
 export const showDashboard = async (req, res) => {
     try {
+        console.log('useer that loged : ' + req.session.user.first_name)
         // Get user ID from query parameter for testing, default to 1
         const userId = parseInt(req.query.userId) || 1;
         
@@ -13,16 +15,15 @@ export const showDashboard = async (req, res) => {
                 title: "Dashboard",
                 error: "Profil utilisateur non trouvé",
                 scripts: [],
-                layout : false
+                layout : false,
+                first_name: "essadeq"
             });
         }
 
         const profileType = userData.profile_type;
         const isAthlete = profileType === 'athlete' || userData.athlete_discipline;
         const isChronic = userData.has_diabetes || userData.has_hypertension || userData.has_obesity;
-
         const dashboardData = await dashboardServices.getDashboardData(userId, userData);
-
         if (isAthlete) {
             res.render('dashboard/dashboard-sportif', {
                 title: "Dashboard Sportif",

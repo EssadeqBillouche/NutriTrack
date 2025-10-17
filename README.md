@@ -1,6 +1,5 @@
 # 🥦 NutriTrack – Assistant Nutritionnel Personnalisé
 
-**Auteur :** Zakaria Ziane  
 **Créé le :** 21/09/2025  
 **Référentiel :** [2023] Concepteur·rice Développeur·se d’Applications
 
@@ -96,5 +95,6 @@ L’objectif est de **renforcer l’adhésion thérapeutique** et d’optimiser 
 | **UI / Frontend** | Frameworks CSS autorisés (Tailwind, Bootstrap, etc.) |
 | **Vision / IA** | Pipeline d’analyse d’images via **LangChain** orchestrant **Gemini Flash 1.5** |
 | **Gestion de Projet** | Découpage par couches, séparation stricte des responsabilités |
+
 
 
